@@ -30,6 +30,11 @@ INSTALLED_APPS = [
 
     # Third Party
     "graphene_django",
+
+    # Apps
+    "apps.account",
+    "apps.book",
+
 ]
 
 MIDDLEWARE = [
@@ -118,6 +123,8 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Django custom user model
+AUTH_USER_MODEL = 'account.User'
 
 # GraphQL Settings
 GRAPHENE = {
