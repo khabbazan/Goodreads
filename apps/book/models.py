@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.account.models import Author
 
 ######################### Book #######################
 
@@ -21,4 +22,11 @@ class Book(models.Model):
         return self.title
 
 
+######################### Book Author ################
 
+class BookAuthor(models.Model):
+    book = models.ForeignKey(Book, related_name='authors', on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, related_name='book', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.book}: {self.author}"
