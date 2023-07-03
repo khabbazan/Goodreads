@@ -1,8 +1,11 @@
 from django.db import models
+from django.db import transaction
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
 from apps.account.managers import CustomUserManager
+from apps.book.models import Shelf
+
 
 
 ######################### User ###################
@@ -21,6 +24,14 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.phone_number
+
+    @transaction.atomic
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        for shelf_name in Shelf.ShelfName.values:
+            Shelf.objects.create(name=shelf_name, user=self)
+        return True
+
 
 ######################### Author ###################
 
