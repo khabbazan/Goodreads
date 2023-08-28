@@ -36,9 +36,9 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ['phone_number', 'name', 'date_joined', 'is_staff', 'is_active']
+    list_display = ['phone_number', 'full_name', 'date_joined', 'is_staff', 'is_active']
     list_filter = ['is_staff', 'is_active']
     search_fields = ['phone_number']
-    list_display_links = ['phone_number', 'name']
+    list_display_links = ['phone_number', 'full_name']
     list_editable = ['is_staff', 'is_active']
     inlines = [FollowingInline, FollowersInline, AuthorInline]

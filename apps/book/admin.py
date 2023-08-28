@@ -4,7 +4,7 @@ from django.forms.models import BaseInlineFormSet
 from apps.account.models import User
 from apps.book.models import Book, BookAuthor, Shelf, BookShelf
 
-###################### Relation Admin ####################
+###################### BookAuthor Admin ####################
 @admin.register(BookAuthor)
 class BookAuthorAdmin(admin.ModelAdmin):
     list_display = ['book', 'author']
@@ -45,20 +45,11 @@ class ShelfInline(admin.TabularInline):
     fk_name = "shelf"
     extra = 1
 
-class UserBookShelfInlineFormSet(BaseInlineFormSet):
-
-    def get_queryset(self):
-        qs = super(UserBookShelfInlineFormSet, self).get_queryset()
-        print("here")
-        print(User.objects.get(phone_number="09383892946"))
-        return qs.filter(user=User.objects.get(phone_number="09383892946"))
 class UserBookShelfInline(admin.TabularInline):
     model = BookShelf
-    formset = UserBookShelfInlineFormSet
-    fields = ('book', 'shelf')
-
     fk_name = "user"
     extra = 1
+
 
 ##################### Shelf Admin ####################
 

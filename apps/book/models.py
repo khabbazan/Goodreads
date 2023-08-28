@@ -44,7 +44,7 @@ class Shelf(models.Model):
     class Meta:
         verbose_name_plural = "Shelves"
     def __str__(self):
-        return f"{self.get_name_display()}"
+        return f"{self.user}[{self.get_name_display()}]"
 
 ##################### Book Shelf #####################
 
