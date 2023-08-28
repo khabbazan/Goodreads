@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from pathlib import Path
 
@@ -30,6 +31,7 @@ INSTALLED_APPS = [
 
     # Third Party
     "graphene_django",
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
 
     # Apps
     "apps.account",
@@ -45,6 +47,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'Goodreads.urls'
@@ -128,5 +131,25 @@ AUTH_USER_MODEL = 'account.User'
 
 # GraphQL Settings
 GRAPHENE = {
-    "SCHEMA": "Goodreads.schema.schema"
+    "SCHEMA": "Goodreads.schema.schema",
+    "MIDDLEWARE": [
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+    ],
 }
+
+# Authentication Model
+AUTHENTICATION_BACKENDS = [
+    "graphql_jwt.backends.JSONWebTokenBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+# JWT Settings
+GRAPHQL_JWT = {
+    "JWT_VERIFY": True,
+    "JWT_SECRET_KEY": SECRET_KEY,
+    "JWT_VERIFY_EXPIRATION": True,
+    "JWT_EXPIRATION_DELTA": timedelta(days=1),
+    "JWT_ALLOW_REFRESH": True,
+    "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=7),
+}
+
