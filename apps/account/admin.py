@@ -25,20 +25,20 @@ class FollowersInline(admin.TabularInline):
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['phone_number', 'date_joined', 'is_staff', 'is_active']
+    list_display = ['phone_number', 'date_joined', 'is_staff', 'is_active', 'is_author']
     list_filter = ['is_staff', 'is_active']
     search_fields = ['phone_number']
     list_display_links = ['phone_number']
-    list_editable = ['is_staff', 'is_active']
+    list_editable = ['is_staff', 'is_active', 'is_author']
     inlines = [FollowingInline, FollowersInline, UserBookShelfInline]
 
 ###################### Author Admin ####################
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ['phone_number', 'full_name', 'date_joined', 'is_staff', 'is_active']
+    list_display = ['phone_number', 'full_name', 'date_joined', 'is_staff', 'is_active', 'is_author']
     list_filter = ['is_staff', 'is_active']
     search_fields = ['phone_number']
     list_display_links = ['phone_number', 'full_name']
-    list_editable = ['is_staff', 'is_active']
+    list_editable = ['is_staff', 'is_active', 'is_author']
     inlines = [FollowingInline, FollowersInline, AuthorInline]

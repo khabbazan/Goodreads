@@ -18,7 +18,7 @@ class ResponseWithToken(graphene.ObjectType):
     metadata = generic.GenericScalar()
 
 
-class ResponseType(graphene.Union):
+class ResponseUnion(graphene.Union):
     """
     use for dynamic outputs in mutations.
     """
@@ -30,5 +30,5 @@ class ResponseType(graphene.Union):
         )
 
 class PageType(graphene.InputObjectType):
-    page_size = graphene.Int(default=10)
-    page_number = graphene.Int(default=1)
+    page_size = graphene.Int()
+    page_number = graphene.Int()

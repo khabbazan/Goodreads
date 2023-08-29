@@ -1,6 +1,9 @@
+import re
+
 from django.db import models
 from django.db import transaction
 from django.utils import timezone
+from django.contrib.auth.hashers import is_password_usable
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
@@ -19,6 +22,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=True)
+    is_author = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
 
     username = None
@@ -37,12 +41,24 @@ class User(AbstractBaseUser, PermissionsMixin):
         user_validation(**vars(self))
         return super().clean()
 
+    def clean_fields(self, *args, **kwargs):
+        user_vars = {**vars(self)}
+        user_vars.update(kwargs)
+        user_validation(**user_vars)
+        return True
+
     @transaction.atomic
     def save(self, *args, **kwargs):
+        self.clean()
+
+        if is_password_usable(self.password):
+            self.set_password(self.password)
+
         super().save(*args, **kwargs)
         if not self.shelves.all():
             for shelf_name in Shelf.ShelfName.values:
                 Shelf.objects.create(name=shelf_name, user=self)
+
         return True
 
 

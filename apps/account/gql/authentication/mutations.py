@@ -7,7 +7,7 @@ from graphql_jwt.shortcuts import create_refresh_token
 from graphql_jwt.shortcuts import get_token
 
 from helpers import http_code
-from helpers.generic_types import ResponseType
+from helpers.generic_types import ResponseUnion
 from helpers.generic_types import ResponseBase
 from helpers.generic_types import ResponseWithToken
 from apps.account.models import User
@@ -17,7 +17,7 @@ class CreateLogin(graphene.Mutation):
     class Arguments:
         user_input = graphene.Argument(UserInputType, default_value={})
 
-    Output = ResponseType
+    Output = ResponseUnion
 
     def mutate(self, info, user_input):
         existence_state = User.objects.filter(phone_number=user_input["phone_number"]).exists()

@@ -3,19 +3,12 @@ import graphene
 from apps.account.gql.schema import Mutation as AccountMutation
 from apps.account.gql.schema import Query as AccountQuery
 
-import graphene
+class Query(
+    AccountQuery,
 
-from apps.account.gql.schema import Mutation as AccountMutation
-from apps.account.gql.schema import Query as AccountQuery
+):
+    pass
 
-# class Query(
-#     AccountQuery,
-#
-# ):
-#     pass
-
-class Query(graphene.ObjectType):
-    hello = graphene.String(default_value="Hi!")
 
 class Mutation(graphene.ObjectType, AccountMutation):
     pass
