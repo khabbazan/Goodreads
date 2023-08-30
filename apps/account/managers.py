@@ -1,5 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
-from django.db.models import Q, QuerySet
+from django.db.models import Manager
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, phone_number, password, **kwargs):
@@ -20,18 +20,6 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(phone_number, password, **kwargs)
 
+class CustomAuthorManager(Manager):
+    pass
 
-
-class UserQuerySet(QuerySet):
-    """
-    Manager and queryset methods
-    """
-
-    def search(self, query):
-        """
-        Search in listed items of a user by `__icontains` policy in phone numbers.
-        """
-        return self.filter(Q(phone_number__icontains=query)).distinct() if query else self
-
-
-CustomUserManager = CustomUserManager.from_queryset(UserQuerySet)

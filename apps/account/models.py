@@ -1,5 +1,3 @@
-import re
-
 from django.db import models
 from django.db import transaction
 from django.utils import timezone
@@ -9,8 +7,11 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 
 from apps.account.managers import CustomUserManager
+from apps.account.managers import CustomAuthorManager
+from apps.account.query_sets import UserQuerySet
+from apps.account.query_sets import AuthorQuerySet
 from apps.account.validators import user_validation
-from apps.account.validators import auther_validation
+from apps.account.validators import author_validation
 from apps.book.models import Shelf
 
 
@@ -19,17 +20,17 @@ from apps.book.models import Shelf
 
 class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(_("Phone Number"), max_length=50, unique=True)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    is_superuser = models.BooleanField(default=True)
-    is_author = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(default=timezone.now)
+    is_staff = models.BooleanField(null=True, default=False)
+    is_active = models.BooleanField(null=True, default=True)
+    is_superuser = models.BooleanField(null=True, default=True)
+    is_author = models.BooleanField(null=True, default=False)
+    date_joined = models.DateTimeField(null=True, default=timezone.now)
 
     username = None
     USERNAME_FIELD = "phone_number"
     REQUIRED_FIELDS = []
 
-    objects = CustomUserManager()
+    objects = CustomUserManager.from_queryset(UserQuerySet)()
 
     class Meta:
         ordering = ["phone_number"]
@@ -41,10 +42,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         user_validation(**vars(self))
         return super().clean()
 
-    def clean_fields(self, *args, **kwargs):
-        user_vars = {**vars(self)}
-        user_vars.update(kwargs)
-        user_validation(**user_vars)
+    @classmethod
+    def clean_fields(cls, *args, **kwargs):
+        fields = {**kwargs}
+        user_validation(**fields)
         return True
 
     @transaction.atomic
@@ -64,24 +65,39 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 ######################### Author ###################
 
-class Author(User):
+class Author(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     first_name = models.CharField(_("First Name"), max_length=200, blank=False)
     last_name = models.CharField(_("Last Name"), max_length=200, blank=False)
 
+    objects = CustomAuthorManager.from_queryset(AuthorQuerySet)()
+
     class Meta:
         db_table = "Author"
-        ordering = ["phone_number"]
+        ordering = ["last_name"]
 
     @property
     def full_name(self):
         return f"{self.first_name},{self.last_name}"
 
     def clean(self):
-        auther_validation(**vars(self))
+        author_validation(**vars(self))
         return super().clean()
 
+    @classmethod
+    def clean_fields(cls, *args, **kwargs):
+        fields = {**kwargs}
+        author_validation(**fields)
+        return True
+
+    def save(self, *args, **kwargs):
+        self.user.is_author = True
+        self.user.save()
+        return super().save(*args, **kwargs)
+
+
     def __str__(self):
-        return f"[AUTHER]-{self.phone_number}"
+        return f"[AUTHER]-{self.user.phone_number}"
 
 ######################### Relation ###################
 

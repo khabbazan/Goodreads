@@ -5,8 +5,10 @@ from apps.account.gql.user.mutations import UserEdit
 
 from apps.account.gql.user.queries import UserList
 from apps.account.gql.user.queries import UserDetail
+from apps.account.gql.author.queries import AuthorList
+from apps.account.gql.author.queries import AuthorDetail
 
-class Query(UserList, UserDetail):
+class Query(UserList, UserDetail, AuthorList, AuthorDetail):
     pass
 
 
