@@ -7,9 +7,9 @@ from apps.book.admin import AuthorInline, UserBookShelfInline
 
 @admin.register(Relation)
 class RelationAdmin(admin.ModelAdmin):
-    list_display = ['followers', 'following']
-    search_fields = ['followers', 'following']
-    list_display_links = ['followers', 'following']
+    list_display = ['follower', 'following']
+    search_fields = ['follower', 'following']
+    list_display_links = ['follower', 'following']
 
 class FollowingInline(admin.TabularInline):
     model = Relation
@@ -18,7 +18,7 @@ class FollowingInline(admin.TabularInline):
 
 class FollowersInline(admin.TabularInline):
     model = Relation
-    fk_name = "followers"
+    fk_name = "follower"
     extra = 1
 
 ###################### User Admin ####################

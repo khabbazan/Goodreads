@@ -6,6 +6,7 @@ from helpers import http_code
 from helpers.generic_types import ResponseBase
 from apps.account.gql.author.types import AuthorEditInputType
 from apps.account.models import Author
+
 class AuthorEdit(graphene.Mutation):
     class Arguments:
         data = graphene.Argument(AuthorEditInputType)

@@ -102,8 +102,9 @@ class Author(models.Model):
 ######################### Relation ###################
 
 class Relation(models.Model):
-    followers = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)
-    following = models.ForeignKey(User, related_name='following', on_delete=models.CASCADE)
+    follower = models.ForeignKey(User, related_name='following', on_delete=models.CASCADE)
+    following = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)
+    followed_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.followers} -> {self.following}"
+        return f"{self.follower.phone_number} follows {self.following.phone_number}"
