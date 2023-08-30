@@ -19,3 +19,4 @@ class UserListType(graphene.ObjectType):
 
 class UserEditInputType(graphene.InputObjectType):
     password = graphene.Argument(graphene.String)
+    is_author = graphene.Argument(graphene.Boolean)
