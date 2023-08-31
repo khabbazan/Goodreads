@@ -23,3 +23,6 @@ class CustomUserManager(BaseUserManager):
 class CustomAuthorManager(Manager):
     pass
 
+class CustomRelationManager(Manager):
+    pass
+

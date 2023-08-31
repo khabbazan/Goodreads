@@ -22,6 +22,9 @@ class UserEdit(graphene.Mutation):
         if data.get("password"):
             user.set_password(data.pop("password"))
 
+        if data.get("gender"):
+            data["gender"] = getattr(data["gender"], "name", data.get("gender"))
+
         if not data.get("is_author"):
             User.objects.filter(phone_number=user).update(**data)
         elif not user.is_author:

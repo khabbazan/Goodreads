@@ -32,6 +32,12 @@ class UserAdmin(admin.ModelAdmin):
     list_editable = ['is_staff', 'is_active', 'is_author']
     inlines = [FollowingInline, FollowersInline, UserBookShelfInline]
 
+    def save_model(self, request, obj, form, change):
+        """
+        Given a model instance save it to the database.
+        """
+        obj.save()
+
 ###################### Author Admin ####################
 
 @admin.register(Author)

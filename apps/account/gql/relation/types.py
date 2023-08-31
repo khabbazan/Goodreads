@@ -1,7 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
 
-from apps.account.models import User, Relation
+from apps.account.models import Relation
 
 class UserFollowerQueryType(DjangoObjectType):
     class Meta:

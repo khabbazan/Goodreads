@@ -1,11 +1,12 @@
 from django.db import models
 from django.db import transaction
 from django.utils import timezone
-from django.contrib.auth.hashers import is_password_usable
+from django.contrib.auth.hashers import identify_hasher
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 
+from apps.account.choices import GENDER
 from apps.account.managers import CustomUserManager
 from apps.account.managers import CustomAuthorManager
 from apps.account.query_sets import UserQuerySet
@@ -24,6 +25,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(null=True, default=True)
     is_superuser = models.BooleanField(null=True, default=True)
     is_author = models.BooleanField(null=True, default=False)
+    gender = models.CharField(max_length=6, choices=GENDER)
     date_joined = models.DateTimeField(null=True, default=timezone.now)
 
     username = None
@@ -52,7 +54,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         self.clean()
 
-        if is_password_usable(self.password):
+        try:
+            identify_hasher(self.password)
+        except ValueError:
             self.set_password(self.password)
 
         super().save(*args, **kwargs)
