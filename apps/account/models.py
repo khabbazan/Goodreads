@@ -6,7 +6,6 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 
-from apps.account.choices import GENDER
 from apps.account.managers import CustomUserManager
 from apps.account.managers import CustomAuthorManager
 from apps.account.query_sets import UserQuerySet
@@ -20,6 +19,12 @@ from apps.book.models import Shelf
 ######################### User ###################
 
 class User(AbstractBaseUser, PermissionsMixin):
+
+    GENDER = (
+        ("MALE", _("MALE")),
+        ("FEMALE", _("FEMALE")),
+    )
+
     phone_number = models.CharField(_("Phone Number"), max_length=50, unique=True)
     is_staff = models.BooleanField(null=True, default=False)
     is_active = models.BooleanField(null=True, default=True)
