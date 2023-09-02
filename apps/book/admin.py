@@ -1,7 +1,5 @@
 from django.contrib import admin
-from django.forms.models import BaseInlineFormSet
 
-from apps.account.models import User
 from apps.book.models import Book, BookAuthor, Shelf, BookShelf
 
 ###################### BookAuthor Admin ####################

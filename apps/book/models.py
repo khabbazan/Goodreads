@@ -38,12 +38,13 @@ class BookAuthor(models.Model):
 
 class Shelf(models.Model):
 
-    class ShelfName(models.TextChoices):
-        READ = 'R', _('Read')
-        CURRENTLY_READING = 'CR', _('Currently Reading')
-        WANT_TO_READ = 'WR', _('Want to Read')
+    ShelfName = (
+        ('R', _('Read')),
+        ('CR', _('Currently Reading')),
+        ('WR', _('Want to Read')),
+    )
 
-    name = models.CharField(_("shelf name"), max_length=2, choices=ShelfName.choices, default=ShelfName.WANT_TO_READ)
+    name = models.CharField(_("shelf name"), max_length=2, choices=ShelfName, default="WR")
     user = models.ForeignKey(to='account.User', related_name='shelves', on_delete=models.CASCADE)
 
     class Meta:
