@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.book.managers import CustomBookManager
+from apps.book.query_sets import BookQuerySet
+
 ######################### Book #######################
 
 class Book(models.Model):
@@ -12,6 +15,8 @@ class Book(models.Model):
 
     create_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
+
+    objects = CustomBookManager.from_queryset(BookQuerySet)()
 
     class Meta:
         ordering = ['title']
