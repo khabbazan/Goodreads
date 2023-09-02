@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.book.managers import CustomBookManager
 from apps.book.query_sets import BookQuerySet
+from apps.book.validators import book_validation
 
 ######################### Book #######################
 
@@ -24,6 +25,19 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+    def clean(self):
+        book_validation(**vars(self))
+        return super().clean()
+
+    @classmethod
+    def clean_fields(cls, *args, **kwargs):
+        fields = {**kwargs}
+        book_validation(**fields)
+        return True
+    
+    def save(self, *args, **kwargs):
+        self.clean()
+        return super().save(*args, **kwargs)
 
 ######################### Book Author ################
 

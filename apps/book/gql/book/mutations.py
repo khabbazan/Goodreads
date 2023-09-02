@@ -26,6 +26,7 @@ class BookAdd(graphene.Mutation):
         author = Author.objects.filter(
             Q(id=author_data.get('pk')) | Q(user__phone_number=author_data.get("phone_number"))
         ).first()
+        Book.clean_fields(**data)
 
         with transaction.atomic():
             book = Book(**data)
@@ -51,6 +52,7 @@ class BookEdit(graphene.Mutation):
 
         pk = data.pop("pk")
         user = info.context.user
+        Book.clean_fields(**data)
 
         book = Book.objects.filter(id=pk, authors__author__user=user).first()
 
