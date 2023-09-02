@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     # Apps
     "apps.account",
     "apps.book",
+    "apps.extension",
 
 ]
 
@@ -111,6 +112,14 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+
+# Image file settings
+IMAGE_SIZE = {
+    "small": (250, 143),
+    "medium": (350, 200),
+    "large": (500, 285),
+}
 
 
 # Static files (CSS, JavaScript, Images)
