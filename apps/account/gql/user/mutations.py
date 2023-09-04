@@ -7,6 +7,8 @@ from helpers.generic_types import ResponseBase
 from apps.account.gql.user.types import UserEditInputType
 from apps.account.models import User
 from apps.account.models import Author
+from apps.extension.models import Image
+
 class UserEdit(graphene.Mutation):
     class Arguments:
         data = graphene.Argument(UserEditInputType)
@@ -17,7 +19,7 @@ class UserEdit(graphene.Mutation):
     def mutate(self, info, data):
 
         user = info.context.user
-        User.clean_fields(**data)
+        data = User.clean_fields(**data)
 
         if data.get("password"):
             user.set_password(data.pop("password"))
@@ -25,12 +27,19 @@ class UserEdit(graphene.Mutation):
         if data.get("gender"):
             data["gender"] = getattr(data["gender"], "name", data.get("gender"))
 
-        if not data.get("is_author"):
-            User.objects.filter(phone_number=user).update(**data)
-        elif not user.is_author:
+        if data.get("base64_image"):
+            image_content = Image.base64_to_image(data.pop("base64_image"))
+            user.avatar = image_content
+            user.save()
+        elif data.get("base64_image") == "":
+            user.avatar.delete()
+
+        if data.get("is_author") and not user.is_author:
             author = Author(user=user, first_name="no-firstname", last_name="no-lastname")
             author.clean()
             author.save()
+
+        User.objects.filter(phone_number=user).update(**data)
 
         return ResponseBase(
             status=http_code.HTTP_200_OK,

@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.hashers import identify_hasher
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.contenttypes.fields import GenericRelation
 from django.utils.translation import gettext_lazy as _
 
 from apps.account.managers import CustomUserManager
@@ -13,6 +14,7 @@ from apps.account.query_sets import AuthorQuerySet
 from apps.account.validators import user_validation
 from apps.account.validators import author_validation
 from apps.book.models import Shelf
+from apps.extension.models import Image
 
 
 
@@ -31,6 +33,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(null=True, default=True)
     is_author = models.BooleanField(null=True, default=False)
     gender = models.CharField(max_length=6, choices=GENDER)
+    _avatar = GenericRelation(Image)
+
     date_joined = models.DateTimeField(null=True, default=timezone.now)
 
     username = None
@@ -41,6 +45,25 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         ordering = ["phone_number"]
+
+    @property
+    def avatar(self):
+        if self._avatar.count():
+            return self._avatar.last()
+        else:
+            return False
+
+    @avatar.setter
+    def avatar(self, new_avatar):
+        # remove old avatars
+        if self._avatar.count():
+            old_avatar = self._avatar.model.objects.first()
+            old_avatar.delete()
+
+        # create new avatar
+        image_instance = self._avatar.model(user=self, content_object=self, original_image=new_avatar)
+        image_instance.save()
+
 
     def __str__(self):
         return self.phone_number
@@ -53,7 +76,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def clean_fields(cls, *args, **kwargs):
         fields = {**kwargs}
         user_validation(**fields)
-        return True
+        return {k: v for k, v in fields.items() if v is not None}
 
     @transaction.atomic
     def save(self, *args, **kwargs):
@@ -97,7 +120,7 @@ class Author(models.Model):
     def clean_fields(cls, *args, **kwargs):
         fields = {**kwargs}
         author_validation(**fields)
-        return True
+        return {k: v for k, v in fields.items() if v is not None}
 
     def save(self, *args, **kwargs):
         self.user.is_author = True

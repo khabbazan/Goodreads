@@ -16,7 +16,7 @@ SECRET_KEY = 'django-insecure--(71xsj^1hc08onnqd81i6+%0pj1afz#05(h7)h!*-*8=k@zx-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -121,14 +121,44 @@ IMAGE_SIZE = {
     "large": (500, 285),
 }
 
+# Static and Media Files
+if DEBUG:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+else:
+    ################ SCALEWAY ################
+    AWS_ACCESS_KEY_ID = "SCW4G0WFXKB5MB0SZV40"
+    AWS_SECRET_ACCESS_KEY = "c3399505-5632-4ff3-8e53-f9ee5dda8a33"
+    AWS_STORAGE_BUCKET_NAME = "unityrip"
+    AWS_S3_REGION_NAME = "nl-ams"
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.nl-ams.scw.cloud"
+    AWS_S3_ENDPOINT_URL = "https://s3.nl-ams.scw.cloud"
 
-# Media Files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+    ################ GENERAL SETTING ################
+    AWS_SERVICE_NAME = "s3"
+    AWS_S3_FILE_OVERWRITE = True
+    AWS_DEFAULT_ACL = "public-read"
+
+    # AWS S3 additional parameters
+    AWS_S3_OBJECT_PARAMETERS = {
+        "CacheControl": "max-age=86400",
+    }
+    AWS_QUERYSTRING_AUTH = False
+
+    # AWS S3 storage settings
+    STORAGES = {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
+
+    # Static files settings
+    AWS_LOCATION = "static"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
+    STORAGES["staticfiles"] = {"BACKEND": "storages.backends.s3boto3.S3ManifestStaticStorage"}
+
+    AWS_MEDIA_LOCATION = "media"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
+    MEDIA_ROOT = ""
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

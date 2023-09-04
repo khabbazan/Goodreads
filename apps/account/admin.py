@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from apps.account.models import User, Author, Relation
 from apps.book.admin import AuthorInline, UserBookShelfInline
+from apps.extension.admin import ImageInline
 
 ###################### Relation Admin ####################
 
@@ -30,7 +31,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ['phone_number']
     list_display_links = ['phone_number']
     list_editable = ['is_staff', 'is_active', 'is_author']
-    inlines = [FollowingInline, FollowersInline, UserBookShelfInline]
+    inlines = [ImageInline, FollowingInline, FollowersInline, UserBookShelfInline]
 
     def save_model(self, request, obj, form, change):
         """

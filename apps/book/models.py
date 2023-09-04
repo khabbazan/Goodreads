@@ -33,7 +33,7 @@ class Book(models.Model):
     def clean_fields(cls, *args, **kwargs):
         fields = {**kwargs}
         book_validation(**fields)
-        return True
+        return {k: v for k, v in fields.items() if v is not None}
     
     def save(self, *args, **kwargs):
         self.clean()
