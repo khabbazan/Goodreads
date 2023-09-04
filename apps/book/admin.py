@@ -1,6 +1,10 @@
 from django.contrib import admin
 
-from apps.book.models import Book, BookAuthor, Shelf, BookShelf
+from apps.book.models import Book
+from apps.book.models import BookAuthor
+from apps.book.models import Shelf
+from apps.book.models import BookShelf
+from apps.book.models import Tag
 
 ###################### BookAuthor Admin ####################
 @admin.register(BookAuthor)
@@ -58,3 +62,10 @@ class ShelfAdmin(admin.ModelAdmin):
     search_fields = ['name', 'user']
     list_display_links = ['name']
     inlines = [ShelfInline]
+
+########################## Tag #######################
+
+class TagAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Tag, TagAdmin)

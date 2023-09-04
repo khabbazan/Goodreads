@@ -2,8 +2,27 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.book.managers import CustomBookManager
+from apps.book.managers import CustomTagManager
 from apps.book.query_sets import BookQuerySet
+from apps.book.query_sets import TagQuerySet
 from apps.book.validators import book_validation
+
+###################### Tag ############################
+
+class Tag(models.Model):
+
+    TAG = (
+        ("NEW", _("NEW")),
+        ("TREND", _("TREND")),
+        ("DISCOUNT", _("DISCOUNT")),
+    )
+
+    name = models.CharField(max_length=20, choices=TAG)
+
+    objects = CustomTagManager.from_queryset(TagQuerySet)()
+
+    def __str__(self):
+        return self.name
 
 ######################### Book #######################
 
@@ -13,6 +32,7 @@ class Book(models.Model):
     title = models.CharField(_("book title"), max_length=255)
     description = models.TextField(blank=True)
     is_active = models.BooleanField(_('is_active'), default=True)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     create_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)

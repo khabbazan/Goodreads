@@ -1,0 +1,23 @@
+[
+    {
+        "model": "book.tag",
+        "pk": 1,
+        "fields": {
+            "name": "NEW"
+        }
+    },
+    {
+        "model": "book.tag",
+        "pk": 2,
+        "fields": {
+            "name": "TREND"
+        }
+    },
+    {
+        "model": "book.tag",
+        "pk": 6,
+        "fields": {
+            "name": "DISCOUNT"
+        }
+    }
+]

@@ -3,6 +3,7 @@ from graphene_django import DjangoObjectType
 
 from apps.book.models import Book
 from apps.book.models import BookAuthor
+from apps.book.gql.tag.enums import BookTagENUM
 
 
 class BookAuthorInputType(graphene.InputObjectType):
@@ -20,6 +21,7 @@ class BookInputType(graphene.InputObjectType):
     author = graphene.Field(BookAuthorInputType, required=True)
     ISBN = graphene.Argument(graphene.String, required=True)
     title = graphene.Argument(graphene.String, required=True)
+    tags = graphene.Argument(graphene.List(BookTagENUM))
     description = graphene.Argument(graphene.String)
 
 
@@ -41,6 +43,7 @@ class BookListType(graphene.ObjectType):
 
 class BookFilterType(graphene.InputObjectType):
     is_active = graphene.Boolean()
+    tags = graphene.Argument(graphene.List(BookTagENUM))
 
 
 class BookEditInputType(graphene.InputObjectType):
@@ -48,4 +51,5 @@ class BookEditInputType(graphene.InputObjectType):
     ISBN = graphene.Argument(graphene.String)
     title = graphene.Argument(graphene.String)
     description = graphene.Argument(graphene.String)
+    tags = graphene.Argument(graphene.List(BookTagENUM))
     is_active = graphene.Argument(graphene.Boolean)

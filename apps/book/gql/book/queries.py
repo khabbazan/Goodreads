@@ -31,6 +31,10 @@ class BookList(graphene.ObjectType):
             if filter_is_active is not None:
                 res = res.filter(is_active=filter_is_active)
 
+            tags = filter.get("tags")
+            if tags:
+                res = res.filter(tags__name__in=tags).distinct()
+
 
         page_number = page.get("page_number")
         page_size = page.get("page_size")

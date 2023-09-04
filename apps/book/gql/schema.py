@@ -7,8 +7,9 @@ from apps.book.gql.shelf.mutations import ChangeBookFromShelf
 from apps.book.gql.book.queries import BookList
 from apps.book.gql.book.queries import BookDetail
 from apps.book.gql.shelf.queries import UserShelfList
+from apps.book.gql.tag.queries import TagList
 
-class Query(BookList, BookDetail, UserShelfList):
+class Query(BookList, BookDetail, UserShelfList, TagList):
     pass
 
 

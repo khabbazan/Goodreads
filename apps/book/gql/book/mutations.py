@@ -11,6 +11,7 @@ from apps.book.gql.book.types import BookEditInputType
 from apps.account.models import Author
 from apps.book.models import BookAuthor
 from apps.book.models import Book
+from apps.book.models import Tag
 
 
 class BookAdd(graphene.Mutation):
@@ -26,13 +27,21 @@ class BookAdd(graphene.Mutation):
         author = Author.objects.filter(
             Q(id=author_data.get('pk')) | Q(user__phone_number=author_data.get("phone_number"))
         ).first()
+
+
+        tags = [item.name for item in data.pop("tags", [])]
+        tags = Tag.objects.filter(name__in=tags)
+
+
         Book.clean_fields(**data)
 
         with transaction.atomic():
             book = Book(**data)
+
             book_author = BookAuthor(book=book, author=author)
             book.save()
             book_author.save()
+            book.tags.add(*tags)
 
         return ResponseBase(
             status=http_code.HTTP_200_OK,
@@ -52,12 +61,20 @@ class BookEdit(graphene.Mutation):
 
         pk = data.pop("pk")
         user = info.context.user
+
+        tags = [item.name for item in data.pop("tags", [])]
+        tags = Tag.objects.filter(name__in=tags)
+
         Book.clean_fields(**data)
 
         book = Book.objects.filter(id=pk, authors__author__user=user).first()
 
         if book:
-            Book.objects.filter(id=pk).update(**data)
+            with transaction.atomic():
+                Book.objects.filter(id=book.id).update(**data)
+                if tags:
+                    book.tags.clear()
+                    book.tags.add(*tags)
 
         else:
             return ResponseBase(
