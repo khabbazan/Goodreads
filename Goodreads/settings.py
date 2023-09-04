@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_ratelimit.middleware.RatelimitMiddleware',
 ]
 
 ROOT_URLCONF = 'Goodreads.urls'
@@ -100,6 +101,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Ratelimit Configs
+RATELIMIT_CONFIGS = {
+    'key': 'user',
+    'rate': '10/m',  # 10 requests per minute
+}
+RATELIMIT_VIEW = 'Goodreads.views.rate_limit_exception_view'
 
 
 # Internationalization
