@@ -1,7 +1,6 @@
 import math
 import graphene
 from django.core.paginator import Paginator
-from graphql_jwt.decorators import login_required
 
 from apps.account.gql.author.types import AuthorListType
 from apps.account.gql.author.types import AuthorFilterType
@@ -21,7 +20,6 @@ class AuthorList(graphene.ObjectType):
     )
 
     @query_cache(cache_key="author.list")
-    @login_required
     def resolve_author_list(self, info, **kwargs):
         """
         Resolve the author_list field to retrieve a list of authors.

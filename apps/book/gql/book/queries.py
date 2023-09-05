@@ -1,7 +1,6 @@
 import math
 import graphene
 from django.core.paginator import Paginator
-from graphql_jwt.decorators import login_required
 
 from apps.book.gql.book.types import BookListType
 from apps.book.gql.book.types import BookQueryType
@@ -20,7 +19,6 @@ class BookList(graphene.ObjectType):
     )
 
     @query_cache(cache_key="book.list")
-    @login_required
     def resolve_book_list(self, info, **kwargs):
         """
         Resolve the book_list field to retrieve a list of books.

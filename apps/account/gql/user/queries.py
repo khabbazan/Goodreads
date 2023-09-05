@@ -60,6 +60,7 @@ class UserDetail(graphene.ObjectType):
         pk=graphene.ID(required=True, description="The unique identifier of the user."),
     )
 
+    @login_required
     def resolve_user_detail(self, info, pk):
         """
         Resolve the user_detail field to retrieve a specific user.
