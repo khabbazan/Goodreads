@@ -1,48 +1,60 @@
 import graphene
 from graphene_django import DjangoObjectType
 
-from apps.account.models import Relation
+from apps.account.models import User
+from apps.account.gql.user.enums import UserGenderENUM
 
-# Define a query object type for user followers.
-class UserFollowerQueryType(DjangoObjectType):
+# Define an input object type for filtering users.
+class UserFilterType(graphene.InputObjectType):
     """
-    Query type for retrieving user followers.
+    Input type for filtering users.
+    """
+    is_author = graphene.Boolean(description="Filter users by their author status.")
+
+# Define an object type for user avatars.
+class AvatarType(graphene.ObjectType):
+    """
+    Object type for user avatars.
+    """
+    small = graphene.String(description="URL of the small-sized avatar image.")
+    medium = graphene.String(description="URL of the medium-sized avatar image.")
+    large = graphene.String(description="URL of the large-sized avatar image.")
+
+# Define a query object type for retrieving user data.
+class UserQueryType(DjangoObjectType):
+    """
+    Query type for retrieving user data.
     """
     class Meta:
-        model = Relation
-        fields = ["follower", "following_on"]
+        model = User
+        exclude = ["last_login", "password", "is_staff", "is_superuser", "date_joined", "is_active", "author"]
 
-# Define an object type for a list of user followers.
-class UserFollowerListType(graphene.ObjectType):
+    avatar = graphene.Field(AvatarType, description="User's avatar images.")
+    def resolve_avatar(root, info):
+        """
+        Resolve the user's avatar images.
+        """
+        return {
+            "small": root.avatar.small_image.url,
+            "medium": root.avatar.medium_image.url,
+            "large": root.avatar.large_image.url,
+        }
+
+# Define an object type for a list of users.
+class UserListType(graphene.ObjectType):
     """
-    Object type for a list of user followers.
+    Object type for a list of users.
     """
-    data = graphene.List(UserFollowerQueryType, description="List of user followers.")
+    data = graphene.List(UserQueryType, description="List of users.")
     page_count = graphene.Int(description="Total number of pages for pagination.")
-    count = graphene.Int(description="Total number of user followers in the list.")
+    count = graphene.Int(description="Total number of users in the list.")
 
-# Define a query object type for user following.
-class UserFollowingQueryType(DjangoObjectType):
+# Define an input object type for editing user data.
+class UserEditInputType(graphene.InputObjectType):
     """
-    Query type for retrieving user following.
+    Input type for editing user data.
     """
-    class Meta:
-        model = Relation
-        fields = ["following", "following_on"]
-
-# Define an object type for a list of user following.
-class UserFollowingListType(graphene.ObjectType):
-    """
-    Object type for a list of user following.
-    """
-    data = graphene.List(UserFollowingQueryType, description="List of user following.")
-    page_count = graphene.Int(description="Total number of pages for pagination.")
-    count = graphene.Int(description="Total number of user following in the list.")
-
-# Define an input object type for following or unfollowing users.
-class FollowInputType(graphene.InputObjectType):
-    """
-    Input type for following or unfollowing users.
-    """
-    id = graphene.Argument(graphene.ID, description="ID of the user to follow or unfollow.")
-    phone_number = graphene.Argument(graphene.String, description="Phone number of the user to follow or unfollow.")
+    base64_image = graphene.Argument(graphene.String, description="Base64-encoded image for updating user avatar.")
+    gender = graphene.Field(UserGenderENUM, description="User's gender.")
+    password = graphene.Argument(graphene.String, description="User's password for authentication.")
+    is_author = graphene.Argument(graphene.Boolean, description="Flag indicating if the user is an author.")
