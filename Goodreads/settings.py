@@ -107,7 +107,7 @@ RATELIMIT_CONFIGS = {
     'key': 'user',
     'rate': '10/m',  # 10 requests per minute
 }
-RATELIMIT_VIEW = 'Goodreads.views.rate_limit_exception_view'
+RATELIMIT_VIEW = 'helpers.ratelimit.rate_limit_exception_view'
 
 
 # Internationalization

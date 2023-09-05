@@ -3,17 +3,17 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from django_ratelimit.decorators import ratelimit
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import user_passes_test
-
 from graphene_django.views import GraphQLView
+
+from helpers.ratelimit import rate_limit_custom_decorate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(
         "graphql/",
-        csrf_exempt(ratelimit(**settings.RATELIMIT_CONFIGS)(GraphQLView.as_view(graphiql=settings.DEBUG)))
+        csrf_exempt(rate_limit_custom_decorate(GraphQLView.as_view(graphiql=settings.DEBUG)))
     ),
     path(
         "graphql-admin/",
