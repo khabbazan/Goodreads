@@ -1,38 +1,48 @@
 import graphene
 from graphene_django import DjangoObjectType
 
-from apps.account.models import User
-from apps.account.gql.user.enums import UserGenderENUM
+from apps.account.models import Relation
 
-
-class UserFilterType(graphene.InputObjectType):
-    is_author = graphene.Boolean()
-
-class AvatarType(graphene.ObjectType):
-    small = graphene.String()
-    medium = graphene.String()
-    large = graphene.String()
-
-class UserQueryType(DjangoObjectType):
+# Define a query object type for user followers.
+class UserFollowerQueryType(DjangoObjectType):
+    """
+    Query type for retrieving user followers.
+    """
     class Meta:
-        model = User
-        exclude = ["last_login", "password", "is_staff", "is_superuser", "date_joined", "is_active", "author"]
+        model = Relation
+        fields = ["follower", "following_on"]
 
-    avatar = graphene.Field(AvatarType)
-    def resolve_avatar(root, info):
-        return {
-            "small": root.avatar.small_image.url,
-            "medium": root.avatar.medium_image.url,
-            "large": root.avatar.large_image.url,
-        }
+# Define an object type for a list of user followers.
+class UserFollowerListType(graphene.ObjectType):
+    """
+    Object type for a list of user followers.
+    """
+    data = graphene.List(UserFollowerQueryType, description="List of user followers.")
+    page_count = graphene.Int(description="Total number of pages for pagination.")
+    count = graphene.Int(description="Total number of user followers in the list.")
 
-class UserListType(graphene.ObjectType):
-    data = graphene.List(UserQueryType)
-    page_count = graphene.Int()
-    count = graphene.Int()
+# Define a query object type for user following.
+class UserFollowingQueryType(DjangoObjectType):
+    """
+    Query type for retrieving user following.
+    """
+    class Meta:
+        model = Relation
+        fields = ["following", "following_on"]
 
-class UserEditInputType(graphene.InputObjectType):
-    base64_image = graphene.Argument(graphene.String)
-    gender = graphene.Field(UserGenderENUM)
-    password = graphene.Argument(graphene.String)
-    is_author = graphene.Argument(graphene.Boolean)
+# Define an object type for a list of user following.
+class UserFollowingListType(graphene.ObjectType):
+    """
+    Object type for a list of user following.
+    """
+    data = graphene.List(UserFollowingQueryType, description="List of user following.")
+    page_count = graphene.Int(description="Total number of pages for pagination.")
+    count = graphene.Int(description="Total number of user following in the list.")
+
+# Define an input object type for following or unfollowing users.
+class FollowInputType(graphene.InputObjectType):
+    """
+    Input type for following or unfollowing users.
+    """
+    id = graphene.Argument(graphene.ID, description="ID of the user to follow or unfollow.")
+    phone_number = graphene.Argument(graphene.String, description="Phone number of the user to follow or unfollow.")

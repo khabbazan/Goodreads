@@ -1,6 +1,7 @@
 import graphene
 from graphene.types import generic
 
+# Represents a basic response object.
 class ResponseBase(graphene.ObjectType):
     """
     Represents a basic response object.
@@ -11,11 +12,12 @@ class ResponseBase(graphene.ObjectType):
         - message (str): A message associated with the response.
         - metadata (GenericScalar): Additional metadata associated with the response.
     """
-    status = graphene.String()
-    status_code = graphene.Int()
-    message = graphene.String()
-    metadata = generic.GenericScalar()
+    status = graphene.String(description="The status of the response.")
+    status_code = graphene.Int(description="The HTTP status code of the response.")
+    message = graphene.String(description="A message associated with the response.")
+    metadata = generic.GenericScalar(description="Additional metadata associated with the response.")
 
+# Represents a response object with authentication tokens.
 class ResponseWithToken(graphene.ObjectType):
     """
     Represents a response object with authentication tokens.
@@ -28,13 +30,14 @@ class ResponseWithToken(graphene.ObjectType):
         - refresh_token (str): A refresh token.
         - metadata (GenericScalar): Additional metadata associated with the response.
     """
-    status = graphene.String()
-    status_code = graphene.Int()
-    message = graphene.String()
-    token = graphene.String()
-    refresh_token = graphene.String()
-    metadata = generic.GenericScalar()
+    status = graphene.String(description="The status of the response.")
+    status_code = graphene.Int(description="The HTTP status code of the response.")
+    message = graphene.String(description="A message associated with the response.")
+    token = graphene.String(description="An authentication token.")
+    refresh_token = graphene.String(description="A refresh token.")
+    metadata = generic.GenericScalar(description="Additional metadata associated with the response.")
 
+# Represents a union of response types for dynamic outputs in mutations.
 class ResponseUnion(graphene.Union):
     """
     Represents a union of response types for dynamic outputs in mutations.
@@ -52,6 +55,7 @@ class ResponseUnion(graphene.Union):
             ResponseBase,
         )
 
+# Represents an input object for specifying pagination parameters.
 class PageType(graphene.InputObjectType):
     """
     Represents an input object for specifying pagination parameters.
@@ -60,5 +64,5 @@ class PageType(graphene.InputObjectType):
         - page_size (int): The number of items per page.
         - page_number (int): The page number.
     """
-    page_size = graphene.Int()
-    page_number = graphene.Int()
+    page_size = graphene.Int(description="The number of items per page.")
+    page_number = graphene.Int(description="The page number.")
