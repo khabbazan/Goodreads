@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     # Third Party
     "graphene_django",
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'django_extensions',
 
     # Apps
     "apps.account",
@@ -136,6 +137,13 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+# Django Extension Graphviz Settings
+GRAPH_MODELS = {
+  # 'all_applications': True,
+  'app_labels': ["account"],
+  'group_models': True,
+}
 
 # Image file settings
 IMAGE_SIZE = {
