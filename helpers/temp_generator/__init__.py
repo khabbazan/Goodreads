@@ -8,7 +8,13 @@ from django.utils.translation import gettext_lazy as _
 
 def generate_temp_file(with_datetime=True):
     """
-    Generate file in tmp directory.
+    Generate a temporary file in the system's temporary directory.
+
+    Args:
+        with_datetime (bool): Whether to include a timestamp in the temporary file's name.
+
+    Returns:
+        str: The path to the generated temporary file.
     """
     suff = ""
     if with_datetime:
@@ -19,10 +25,27 @@ def generate_temp_file(with_datetime=True):
     return tf.name
 
 
-def generate_random_filename(instance=None, filename=None, ext=None, suffix="", with_datetime=False, directory="images"):
-    """Generate a unique filename for the uploaded image."""
+def generate_random_filename(instance=None, filename=None, ext=None, suffix="", with_datetime=False,
+                             directory="images"):
+    """
+    Generate a unique filename for an uploaded file.
+
+    Args:
+        instance: The instance associated with the uploaded file (unused in this function).
+        filename (str): The original filename or None.
+        ext (str): The file extension or None.
+        suffix (str): An optional suffix to append to the generated filename.
+        with_datetime (bool): Whether to include a timestamp in the filename.
+        directory (str): The directory where the file will be stored.
+
+    Returns:
+        str: The generated unique filename.
+
+    Raises:
+        ValueError: If both filename and ext are None.
+    """
     if filename is None and ext is None:
-        return ValueError(_("You should provide filename or ext."))
+        raise ValueError(_("You should provide filename or ext."))
 
     ext = filename.split(".")[-1] if ext is None else ext
 

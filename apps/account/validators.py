@@ -5,6 +5,16 @@ from django.utils.translation import gettext_lazy as _
 def user_validation(phone_number=None, password=None, *args, **kwargs):
     """
     Validate user information.
+
+    Args:
+        phone_number (str): The user's phone number.
+        password (str): The user's password.
+
+    Returns:
+        bool: True if validation succeeds.
+
+    Raises:
+        ValidationError: If validation fails.
     """
     validation_functions = [
         {"name": validate_phone_number, "args": [phone_number]},
@@ -15,7 +25,18 @@ def user_validation(phone_number=None, password=None, *args, **kwargs):
     return True
 
 def validate_phone_number(phone_number: str):
+    """
+    Validate a phone number.
 
+    Args:
+        phone_number (str): The phone number to validate.
+
+    Returns:
+        bool: True if validation succeeds.
+
+    Raises:
+        ValidationError: If validation fails.
+    """
     if phone_number is not None:
         pattern = r"^\+(?:[0-9] ?){6,14}[0-9]$"
         match = re.match(pattern, phone_number)
@@ -23,9 +44,19 @@ def validate_phone_number(phone_number: str):
             raise ValidationError(_("Invalid phone number"))
         return True
 
-
 def validate_password(password: str):
+    """
+    Validate a password.
 
+    Args:
+        password (str): The password to validate.
+
+    Returns:
+        bool: True if validation succeeds.
+
+    Raises:
+        ValidationError: If validation fails.
+    """
     if password is not None:
         len_ptr = re.compile(r'(\w{8,})')  # Check if password has at least 8 characters
         if not re.match(len_ptr, password):
@@ -48,6 +79,16 @@ def validate_password(password: str):
 def author_validation(first_name=None, last_name=None, *args, **kwargs):
     """
     Validate author information.
+
+    Args:
+        first_name (str): The author's first name.
+        last_name (str): The author's last name.
+
+    Returns:
+        bool: True if validation succeeds.
+
+    Raises:
+        ValidationError: If validation fails.
     """
     validation_functions = [
         {"name": validate_name, "args": [first_name]},
@@ -58,11 +99,22 @@ def author_validation(first_name=None, last_name=None, *args, **kwargs):
     return True
 
 def validate_name(name: str):
+    """
+    Validate a name.
 
+    Args:
+        name (str): The name to validate.
+
+    Returns:
+        bool: True if validation succeeds.
+
+    Raises:
+        ValidationError: If validation fails.
+    """
     if name is not None:
         pattern = r'^[^0-9!@#$%^&*()_+{}\[\]:;"\'<>,.?/~`\\|]*$'
         match = re.match(pattern, name)
         if not match:
-            raise ValidationError(_(f"{name} should not started with numbers or contain symbolic char."))
+            raise ValidationError(_(f"{name} should not start with numbers or contain symbolic characters."))
 
         return True

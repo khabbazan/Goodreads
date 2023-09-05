@@ -16,28 +16,52 @@ from django.utils.translation import gettext_lazy as _
 from helpers.temp_generator import generate_random_filename
 
 class Image(models.Model):
+    """
+    Model to represent images with various sizes.
+
+    Fields:
+        - user (ForeignKey): The associated user.
+        - original_image (ImageField): The original image file.
+        - large_image (ImageField): The large-sized image file.
+        - medium_image (ImageField): The medium-sized image file.
+        - small_image (ImageField): The small-sized image file.
+        - create_date (DateField): Timestamp for creation.
+
+    GenericForeignKey Fields:
+        - content_type (ForeignKey): The content type for the generic relationship.
+        - object_id (PositiveIntegerField): The object ID for the generic relationship.
+        - content_object (GenericForeignKey): The generic foreign key.
+
+    Methods:
+        - __str__(): Returns the file name or URL of the original image.
+        - delete(*args, **kwargs): Deletes image files when the model instance is deleted.
+        - save(*args, **kwargs): Resizes and saves image files after the model instance is saved.
+        - base64_to_image(base64_string): Converts a base64-encoded image string to a Django ContentFile.
+    """
+
     user = models.ForeignKey("account.User", on_delete=models.CASCADE)
     original_image = models.ImageField(upload_to=generate_random_filename)
     large_image = models.ImageField(null=True, blank=True, upload_to='images/')
     medium_image = models.ImageField(null=True, blank=True, upload_to='images/')
     small_image = models.ImageField(null=True, blank=True, upload_to='images/')
-
     create_date = models.DateField(auto_now_add=True)
 
-    # Below the mandatory fields for generic relation
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
 
     def __str__(self):
+        """
+        Returns the file name or URL of the original image.
+        """
         if settings.DEBUG:
             return self.original_image.file.name
         return self.original_image.url
 
     def delete(self, *args, **kwargs):
-
-        'self.original_image.file.name'
-
+        """
+        Deletes image files when the model instance is deleted.
+        """
         if self.original_image and default_storage.exists(str(self.original_image)):
             default_storage.delete(str(self.original_image))
 
@@ -53,7 +77,9 @@ class Image(models.Model):
         super().delete(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-
+        """
+        Resizes and saves image files after the model instance is saved.
+        """
         super().save()
         img = PilImage.open(self.original_image)
 
@@ -85,6 +111,15 @@ class Image(models.Model):
 
     @staticmethod
     def base64_to_image(base64_string):
+        """
+        Converts a base64-encoded image string to a Django ContentFile.
+
+        Args:
+            base64_string (str): The base64-encoded image string.
+
+        Returns:
+            ContentFile: A Django ContentFile containing the decoded image.
+        """
         if not base64_string:
             return None
 
@@ -93,4 +128,3 @@ class Image(models.Model):
         image_content = ContentFile(base64.b64decode(img_str), name=f'tmp_avatar.{ext}')
 
         return image_content
-
