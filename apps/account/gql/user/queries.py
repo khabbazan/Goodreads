@@ -6,9 +6,9 @@ from graphql_jwt.decorators import login_required
 from apps.account.gql.user.types import UserListType
 from apps.account.gql.user.types import UserFilterType
 from apps.account.gql.user.types import UserQueryType
-from helpers.generic_types import PageType
 from apps.account.models import User
-
+from helpers.generic_types import PageType
+from helpers.cache.decorators import query_cache
 
 class UserList(graphene.ObjectType):
 
@@ -19,6 +19,7 @@ class UserList(graphene.ObjectType):
         page=graphene.Argument(PageType),
     )
 
+    @query_cache(cache_key="user.list")
     @login_required
     def resolve_user_list(self, info, **kwargs):
         search = kwargs.get("search", "")

@@ -4,15 +4,15 @@ from graphql_jwt.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
 
-from helpers import http_code
-from helpers.generic_types import ResponseBase
 from apps.book.gql.book.types import BookInputType
 from apps.book.gql.book.types import BookEditInputType
 from apps.account.models import Author
 from apps.book.models import BookAuthor
 from apps.book.models import Book
 from apps.book.models import Tag
-
+from helpers import http_code
+from helpers.generic_types import ResponseBase
+from helpers.cache.decorators import expire_cache_keys
 
 class BookAdd(graphene.Mutation):
     class Arguments:
@@ -20,6 +20,7 @@ class BookAdd(graphene.Mutation):
 
     Output = ResponseBase
 
+    @expire_cache_keys(["book.list"])
     @login_required
     def mutate(self, info, data):
 

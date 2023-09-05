@@ -20,7 +20,7 @@ class Mutation:
 
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
-    login = CreateLogin.Field()
+    create_login = CreateLogin.Field()
     logout = Logout.Field()
     user_edit = UserEdit.Field()
     author_edit = AuthorEdit.Field()

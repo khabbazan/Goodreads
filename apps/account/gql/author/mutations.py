@@ -2,10 +2,12 @@ import graphene
 from django.utils.translation import gettext_lazy as _
 from graphql_jwt.decorators import login_required
 
-from helpers import http_code
-from helpers.generic_types import ResponseBase
+
 from apps.account.gql.author.types import AuthorEditInputType
 from apps.account.models import Author
+from helpers import http_code
+from helpers.generic_types import ResponseBase
+from helpers.cache.decorators import expire_cache_keys
 
 class AuthorEdit(graphene.Mutation):
     class Arguments:
@@ -13,6 +15,7 @@ class AuthorEdit(graphene.Mutation):
 
     Output = ResponseBase
 
+    @expire_cache_keys(["author.list"])
     @login_required
     def mutate(self, info, data):
 

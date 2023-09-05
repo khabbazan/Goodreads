@@ -102,6 +102,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Django Cache Configs
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "db": "10",
+            "parser_class": "redis.connection.PythonParser",
+            "pool_class": "redis.BlockingConnectionPool",
+        }
+    }
+}
+
+
 # Ratelimit Configs
 RATELIMIT_CONFIGS = {
     'key': 'user',

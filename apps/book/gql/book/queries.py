@@ -6,8 +6,9 @@ from graphql_jwt.decorators import login_required
 from apps.book.gql.book.types import BookListType
 from apps.book.gql.book.types import BookQueryType
 from apps.book.gql.book.types import BookFilterType
-from helpers.generic_types import PageType
 from apps.book.models import Book
+from helpers.generic_types import PageType
+from helpers.cache.decorators import query_cache
 
 
 class BookList(graphene.ObjectType):
@@ -19,6 +20,7 @@ class BookList(graphene.ObjectType):
         page=graphene.Argument(PageType),
     )
 
+    @query_cache(cache_key="book.list")
     @login_required
     def resolve_book_list(self, info, **kwargs):
         search = kwargs.get("search", "")
