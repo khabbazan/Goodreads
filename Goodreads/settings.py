@@ -140,8 +140,7 @@ USE_TZ = True
 
 # Django Extension Graphviz Settings
 GRAPH_MODELS = {
-  # 'all_applications': True,
-  'app_labels': ["account"],
+  'all_applications': True,
   'group_models': True,
 }
 
