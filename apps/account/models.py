@@ -25,6 +25,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     Fields:
         phone_number (str): The user's phone number.
+        email (EmailField): The user's email address.
         is_staff (bool): Indicates if the user has staff privileges.
         is_active (bool): Indicates if the user's account is active.
         is_superuser (bool): Indicates if the user has superuser privileges.
@@ -50,6 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     phone_number = models.CharField(_("Phone Number"), max_length=50, unique=True)
+    email = models.EmailField(null=True, unique=True)
     is_staff = models.BooleanField(null=True, default=False)
     is_active = models.BooleanField(null=True, default=True)
     is_superuser = models.BooleanField(null=True, default=True)

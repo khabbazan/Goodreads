@@ -52,4 +52,5 @@ class UserEditInputType(graphene.InputObjectType):
     base64_image = graphene.Argument(graphene.String, description="Base64-encoded image for updating user avatar.")
     gender = graphene.Field(UserGenderENUM, description="User's gender.")
     password = graphene.Argument(graphene.String, description="User's password for authentication.")
+    email = graphene.Argument(graphene.String, description="User's email.")
     is_author = graphene.Argument(graphene.Boolean, description="Flag indicating if the user is an author.")

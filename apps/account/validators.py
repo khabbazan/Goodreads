@@ -2,13 +2,14 @@ import re
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-def user_validation(phone_number=None, password=None, *args, **kwargs):
+def user_validation(phone_number=None, password=None, email=None, *args, **kwargs):
     """
     Validate user information.
 
     Args:
         phone_number (str): The user's phone number.
         password (str): The user's password.
+        email (str): The user's email address.
 
     Returns:
         bool: True if validation succeeds.
@@ -19,6 +20,7 @@ def user_validation(phone_number=None, password=None, *args, **kwargs):
     validation_functions = [
         {"name": validate_phone_number, "args": [phone_number]},
         {"name": validate_password, "args": [password]},
+        {"name": validate_email, "args": [email]},
     ]
     for func in validation_functions:
         func["name"](*func["args"])
@@ -74,6 +76,26 @@ def validate_password(password: str):
         if not re.findall(digit_ptr, password):
             raise ValidationError(_('Password must contain at least one digit character'))
 
+        return True
+
+def validate_email(email: str):
+    """
+    Validate email address.
+
+    Args:
+        email (str): The email address to validate.
+
+    Returns:
+        bool: True if validation succeeds.
+
+    Raises:
+        ValidationError: If validation fails.
+    """
+    if email is not None:
+        pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        match = re.match(pattern, email)
+        if not match:
+            raise ValidationError(_("Invalid email address"))
         return True
 
 def author_validation(first_name=None, last_name=None, *args, **kwargs):
