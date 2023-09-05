@@ -12,15 +12,26 @@ from apps.book.models import Book
 from apps.book.models import Shelf
 from apps.book.models import BookShelf
 
-
 class AddBookToShelf(graphene.Mutation):
     class Arguments:
-        data = graphene.Argument(BookShelfInputType)
+        data = graphene.Argument(
+            BookShelfInputType,
+            description="Input data for adding a book to a shelf.",
+        )
 
     Output = ResponseBase
 
     @login_required
     def mutate(self, info, data):
+        """
+        Mutate to add a book to a user's shelf.
+
+        Args:
+            data (BookShelfInputType): Input data for adding a book to a shelf.
+
+        Returns:
+            ResponseBase: Response indicating the success or failure of adding the book to the shelf.
+        """
 
         user = info.context.user
         book = Book.objects.filter(id=data.get("book_id")).first()
@@ -35,25 +46,36 @@ class AddBookToShelf(graphene.Mutation):
             return ResponseBase(
                 status=http_code.HTTP_200_OK,
                 status_code=http_code.HTTP_200_OK_CODE,
-                message=_("book added to shelf successfully!"),
+                message=_("Book added to shelf successfully!"),
             )
 
         else:
             return ResponseBase(
                 status=http_code.HTTP_406_NOT_ACCEPTABLE,
                 status_code=http_code.HTTP_406_NOT_ACCEPTABLE_CODE,
-                message=_("operation failed!"),
+                message=_("Operation failed!"),
             )
-
 
 class RemoveBookFromShelf(graphene.Mutation):
     class Arguments:
-        data = graphene.Argument(BookShelfInputType)
+        data = graphene.Argument(
+            BookShelfInputType,
+            description="Input data for removing a book from a shelf.",
+        )
 
     Output = ResponseBase
 
     @login_required
     def mutate(self, info, data):
+        """
+        Mutate to remove a book from a user's shelf.
+
+        Args:
+            data (BookShelfInputType): Input data for removing a book from a shelf.
+
+        Returns:
+            ResponseBase: Response indicating the success or failure of removing the book from the shelf.
+        """
 
         user = info.context.user
         book = Book.objects.filter(id=data.get("book_id")).first()
@@ -68,24 +90,36 @@ class RemoveBookFromShelf(graphene.Mutation):
             return ResponseBase(
                 status=http_code.HTTP_200_OK,
                 status_code=http_code.HTTP_200_OK_CODE,
-                message=_("book removed from shelf successfully!"),
+                message=_("Book removed from shelf successfully!"),
             )
 
         else:
             return ResponseBase(
                 status=http_code.HTTP_406_NOT_ACCEPTABLE,
                 status_code=http_code.HTTP_406_NOT_ACCEPTABLE_CODE,
-                message=_("operation failed!"),
+                message=_("Operation failed!"),
             )
 
 class ChangeBookFromShelf(graphene.Mutation):
     class Arguments:
-        data = graphene.Argument(ChangeBookShelfInputType)
+        data = graphene.Argument(
+            ChangeBookShelfInputType,
+            description="Input data for changing a book from one shelf to another.",
+        )
 
     Output = ResponseBase
 
     @login_required
     def mutate(self, info, data):
+        """
+        Mutate to change a book from one shelf to another on a user's shelf list.
+
+        Args:
+            data (ChangeBookShelfInputType): Input data for changing a book from one shelf to another.
+
+        Returns:
+            ResponseBase: Response indicating the success or failure of changing the book's shelf.
+        """
 
         user = info.context.user
         book = Book.objects.filter(id=data.get("book_id")).first()
@@ -107,12 +141,12 @@ class ChangeBookFromShelf(graphene.Mutation):
             return ResponseBase(
                 status=http_code.HTTP_200_OK,
                 status_code=http_code.HTTP_200_OK_CODE,
-                message=_("book changed from shelf successfully!"),
+                message=_("Book changed from shelf successfully!"),
             )
 
         else:
             return ResponseBase(
                 status=http_code.HTTP_406_NOT_ACCEPTABLE,
                 status_code=http_code.HTTP_406_NOT_ACCEPTABLE_CODE,
-                message=_("operation failed!"),
+                message=_("Operation failed!"),
             )

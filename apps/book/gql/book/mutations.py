@@ -16,23 +16,33 @@ from helpers.cache.decorators import expire_cache_keys
 
 class BookAdd(graphene.Mutation):
     class Arguments:
-        data = graphene.Argument(BookInputType)
+        data = graphene.Argument(
+            BookInputType,
+            description="Input data for adding a book.",
+        )
 
     Output = ResponseBase
 
     @expire_cache_keys(["book.list"])
     @login_required
     def mutate(self, info, data):
+        """
+        Mutate to add a new book.
+
+        Args:
+            data (BookInputType): Input data for adding a book.
+
+        Returns:
+            ResponseBase: Response indicating the success or failure of adding the book.
+        """
 
         author_data = data.pop("author", {})
         author = Author.objects.filter(
             Q(id=author_data.get('pk')) | Q(user__phone_number=author_data.get("phone_number"))
         ).first()
 
-
         tags = [item.name for item in data.pop("tags", [])]
         tags = Tag.objects.filter(name__in=tags)
-
 
         Book.clean_fields(**data)
 
@@ -47,18 +57,30 @@ class BookAdd(graphene.Mutation):
         return ResponseBase(
             status=http_code.HTTP_200_OK,
             status_code=http_code.HTTP_200_OK_CODE,
-            message=_("book added successfully!"),
+            message=_("Book added successfully!"),
         )
 
 
 class BookEdit(graphene.Mutation):
     class Arguments:
-        data = graphene.Argument(BookEditInputType)
+        data = graphene.Argument(
+            BookEditInputType,
+            description="Input data for editing a book.",
+        )
 
     Output = ResponseBase
 
     @login_required
     def mutate(self, info, data):
+        """
+        Mutate to edit a book.
+
+        Args:
+            data (BookEditInputType): Input data for editing a book.
+
+        Returns:
+            ResponseBase: Response indicating the success or failure of editing the book.
+        """
 
         pk = data.pop("pk")
         user = info.context.user
