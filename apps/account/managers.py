@@ -14,6 +14,9 @@ class CustomUserManager(BaseUserManager):
         - create_superuser(phone_number, password, **kwargs):
             Create and save a SuperUser with the given phone_number and password.
 
+        - delete(*args, **kwargs):
+            De-activate objects instead of physically deleting them.
+
     """
     def create_user(self, phone_number, password, **kwargs):
         """
@@ -48,6 +51,16 @@ class CustomUserManager(BaseUserManager):
         kwargs.setdefault("is_active", True)
 
         return self.create_user(phone_number, password, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        """
+        De-activate objects instead of physically deleting them.
+
+        Args:
+            *args: Variable-length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        """
+        self.update(is_active=False)
 
 class CustomAuthorManager(Manager):
     """
