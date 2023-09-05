@@ -12,13 +12,22 @@ from helpers.cache.decorators import expire_cache_keys
 
 class UserEdit(graphene.Mutation):
     class Arguments:
-        data = graphene.Argument(UserEditInputType)
+        data = graphene.Argument(UserEditInputType, description="Input data for user editing.")
 
     Output = ResponseBase
 
     @expire_cache_keys(["user.list"])
     @login_required
     def mutate(self, info, data):
+        """
+        Mutate to edit a user's information.
+
+        Args:
+            data (UserEditInputType): Input data for editing user information.
+
+        Returns:
+            ResponseBase: Response indicating the success or failure of the editing operation.
+        """
 
         user = info.context.user
         data = User.clean_fields(**data)

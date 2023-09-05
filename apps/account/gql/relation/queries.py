@@ -13,12 +13,22 @@ class UserFollowerList(graphene.ObjectType):
 
     user_follower_list = graphene.Field(
         UserFollowerListType,
-        search=graphene.String(),
-        page=graphene.Argument(PageType),
+        search=graphene.String(description="Search for user followers based on a keyword."),
+        page=graphene.Argument(PageType, description="Paginate through the list of user followers."),
     )
 
     @login_required
     def resolve_user_follower_list(self, info, **kwargs):
+        """
+        Resolve the user_follower_list field to retrieve a list of user followers.
+
+        Args:
+            search (str, optional): Search keyword for user followers. Defaults to an empty string.
+            page (PageType, optional): Pagination settings. Defaults to page 1 with 10 items per page.
+
+        Returns:
+            UserFollowerListType: A paginated list of user followers.
+        """
 
         search = kwargs.get("search", "")
         page = kwargs.get("page", {"page_size": 10, "page_number": 1})
@@ -38,16 +48,27 @@ class UserFollowerList(graphene.ObjectType):
 
         return UserFollowerListType(data=paginator.page(page_number), page_count=page_count, count=count)
 
+
 class UserFollowingList(graphene.ObjectType):
 
     user_following_list = graphene.Field(
         UserFollowingListType,
-        search=graphene.String(),
-        page=graphene.Argument(PageType),
+        search=graphene.String(description="Search for users following based on a keyword."),
+        page=graphene.Argument(PageType, description="Paginate through the list of users following."),
     )
 
     @login_required
     def resolve_user_following_list(self, info, **kwargs):
+        """
+        Resolve the user_following_list field to retrieve a list of users following.
+
+        Args:
+            search (str, optional): Search keyword for users following. Defaults to an empty string.
+            page (PageType, optional): Pagination settings. Defaults to page 1 with 10 items per page.
+
+        Returns:
+            UserFollowingListType: A paginated list of users following.
+        """
 
         search = kwargs.get("search", "")
         page = kwargs.get("page", {"page_size": 10, "page_number": 1})

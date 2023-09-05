@@ -15,11 +15,24 @@ from apps.account.gql.authentication.types import UserInputType
 
 class CreateLogin(graphene.Mutation):
     class Arguments:
-        user_input = graphene.Argument(UserInputType, default_value={})
+        user_input = graphene.Argument(
+            UserInputType,
+            description="Input data for user login or registration.",
+            default_value={},
+        )
 
     Output = ResponseUnion
 
     def mutate(self, info, user_input):
+        """
+        Mutate to create a new user or log in an existing user.
+
+        Args:
+            user_input (UserInputType): Input data for user login or registration.
+
+        Returns:
+            ResponseUnion: Response indicating the success or failure of the login/registration operation.
+        """
         existence_state = User.objects.filter(phone_number=user_input["phone_number"]).exists()
 
         if existence_state:
@@ -54,6 +67,12 @@ class Logout(graphene.Mutation):
 
     @login_required
     def mutate(self, info, **kwargs):
+        """
+        Mutate to log out the current user by deleting their refresh tokens.
+
+        Returns:
+            ResponseBase: Response indicating the success of the logout operation.
+        """
         deleted, __ = info.context.user.refresh_tokens.all().delete()
 
         return ResponseBase(
