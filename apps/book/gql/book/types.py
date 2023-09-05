@@ -5,7 +5,6 @@ from apps.book.models import Book
 from apps.book.models import BookAuthor
 from apps.book.gql.tag.enums import BookTagENUM
 
-# Define an input object type for book authors.
 class BookAuthorInputType(graphene.InputObjectType):
     """
     Input type for book authors.
@@ -13,7 +12,6 @@ class BookAuthorInputType(graphene.InputObjectType):
     pk = graphene.Argument(graphene.ID, description="ID of the book author.")
     phone_number = graphene.Argument(graphene.String, description="Phone number of the book author.")
 
-# Define a query object type for book authors.
 class BookAuthorQueryType(DjangoObjectType):
     """
     Query type for retrieving book authors.
@@ -22,7 +20,6 @@ class BookAuthorQueryType(DjangoObjectType):
         model = BookAuthor
         fields = ['author']
 
-# Define an input object type for creating or updating books.
 class BookInputType(graphene.InputObjectType):
     """
     Input type for creating or updating books.
@@ -33,7 +30,6 @@ class BookInputType(graphene.InputObjectType):
     tags = graphene.Argument(graphene.List(BookTagENUM), description="Tags associated with the book.")
     description = graphene.Argument(graphene.String, description="Description of the book.")
 
-# Define a query object type for retrieving book data.
 class BookQueryType(DjangoObjectType):
     """
     Query type for retrieving book data.
@@ -49,7 +45,6 @@ class BookQueryType(DjangoObjectType):
         """
         return root.authors.all()
 
-# Define an object type for a list of books.
 class BookListType(graphene.ObjectType):
     """
     Object type for a list of books.
@@ -58,7 +53,6 @@ class BookListType(graphene.ObjectType):
     page_count = graphene.Int(description="Total number of pages for pagination.")
     count = graphene.Int(description="Total number of books in the list.")
 
-# Define an input object type for filtering books.
 class BookFilterType(graphene.InputObjectType):
     """
     Input type for filtering books.
@@ -66,7 +60,6 @@ class BookFilterType(graphene.InputObjectType):
     is_active = graphene.Boolean(description="Filter books by their active status.")
     tags = graphene.Argument(graphene.List(BookTagENUM), description="Filter books by tags.")
 
-# Define an input object type for editing book data.
 class BookEditInputType(graphene.InputObjectType):
     """
     Input type for editing book data.

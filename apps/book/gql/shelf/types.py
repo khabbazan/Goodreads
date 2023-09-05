@@ -7,7 +7,6 @@ from apps.book.models import Shelf
 from apps.book.models import BookShelf
 from apps.book.gql.shelf.enums import ShelfENUM
 
-# Define a query object type for user shelves.
 class UserShelfQueryType(DjangoObjectType):
     """
     Query type for retrieving user shelf data.
@@ -16,16 +15,14 @@ class UserShelfQueryType(DjangoObjectType):
         model = User
         fields = ["id", "phone_number", "gender"]
 
-# Define a query object type for book shelves.
 class BookShelfQueryType(DjangoObjectType):
     """
-    Query type for retrieving book shelf data.
+    Query type for retrieving bookshelf data.
     """
     class Meta:
         model = Book
         fields = ["id", "title", "ISBN", "description"]
 
-# Define a query object type for shelves.
 class ShelfQueryType(DjangoObjectType):
     """
     Query type for retrieving shelf data.
@@ -48,7 +45,6 @@ class ShelfQueryType(DjangoObjectType):
         """
         return root.get_name_display()
 
-# Define a query object type for user shelves, books, and shelves relationships.
 class UserShelfListQueryType(DjangoObjectType):
     """
     Query type for retrieving user shelf list data.
@@ -61,7 +57,6 @@ class UserShelfListQueryType(DjangoObjectType):
     book = graphene.Field(BookShelfQueryType, description="Book associated with the shelf.")
     shelf = graphene.Field(ShelfQueryType, description="Shelf associated with the user and book.")
 
-# Define an input object type for adding a book to a shelf.
 class BookShelfInputType(graphene.InputObjectType):
     """
     Input type for adding a book to a shelf.
@@ -69,7 +64,6 @@ class BookShelfInputType(graphene.InputObjectType):
     book_id = graphene.Argument(graphene.ID, required=True, description="ID of the book to add to the shelf.")
     shelf_name = graphene.Argument(ShelfENUM, required=True, description="Name of the shelf to add the book to.")
 
-# Define an input object type for changing a book's shelf.
 class ChangeBookShelfInputType(graphene.InputObjectType):
     """
     Input type for changing a book's shelf.

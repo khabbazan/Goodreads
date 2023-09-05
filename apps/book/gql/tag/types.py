@@ -3,7 +3,6 @@ from graphene_django import DjangoObjectType
 
 from apps.book.models import Tag
 
-# Define a query object type for tags.
 class TagListType(DjangoObjectType):
     """
     Query type for retrieving tag data.

@@ -4,14 +4,12 @@ from graphene_django import DjangoObjectType
 from apps.account.models import User
 from apps.account.gql.user.enums import UserGenderENUM
 
-# Define an input object type for filtering users.
 class UserFilterType(graphene.InputObjectType):
     """
     Input type for filtering users.
     """
     is_author = graphene.Boolean(description="Filter users by their author status.")
 
-# Define an object type for user avatars.
 class AvatarType(graphene.ObjectType):
     """
     Object type for user avatars.
@@ -20,7 +18,6 @@ class AvatarType(graphene.ObjectType):
     medium = graphene.String(description="URL of the medium-sized avatar image.")
     large = graphene.String(description="URL of the large-sized avatar image.")
 
-# Define a query object type for retrieving user data.
 class UserQueryType(DjangoObjectType):
     """
     Query type for retrieving user data.
@@ -40,7 +37,6 @@ class UserQueryType(DjangoObjectType):
             "large": root.avatar.large_image.url,
         }
 
-# Define an object type for a list of users.
 class UserListType(graphene.ObjectType):
     """
     Object type for a list of users.
@@ -49,7 +45,6 @@ class UserListType(graphene.ObjectType):
     page_count = graphene.Int(description="Total number of pages for pagination.")
     count = graphene.Int(description="Total number of users in the list.")
 
-# Define an input object type for editing user data.
 class UserEditInputType(graphene.InputObjectType):
     """
     Input type for editing user data.

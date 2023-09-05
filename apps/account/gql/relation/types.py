@@ -3,7 +3,6 @@ from graphene_django import DjangoObjectType
 
 from apps.account.models import Relation
 
-# Define a query object type for user followers.
 class UserFollowerQueryType(DjangoObjectType):
     """
     Query type for retrieving user followers.
@@ -12,7 +11,6 @@ class UserFollowerQueryType(DjangoObjectType):
         model = Relation
         fields = ["follower", "following_on"]
 
-# Define an object type for a list of user followers.
 class UserFollowerListType(graphene.ObjectType):
     """
     Object type for a list of user followers.
@@ -21,7 +19,6 @@ class UserFollowerListType(graphene.ObjectType):
     page_count = graphene.Int(description="Total number of pages for pagination.")
     count = graphene.Int(description="Total number of user followers in the list.")
 
-# Define a query object type for user following.
 class UserFollowingQueryType(DjangoObjectType):
     """
     Query type for retrieving user following.
@@ -30,7 +27,6 @@ class UserFollowingQueryType(DjangoObjectType):
         model = Relation
         fields = ["following", "following_on"]
 
-# Define an object type for a list of user following.
 class UserFollowingListType(graphene.ObjectType):
     """
     Object type for a list of user following.
@@ -39,7 +35,6 @@ class UserFollowingListType(graphene.ObjectType):
     page_count = graphene.Int(description="Total number of pages for pagination.")
     count = graphene.Int(description="Total number of user following in the list.")
 
-# Define an input object type for following or unfollowing users.
 class FollowInputType(graphene.InputObjectType):
     """
     Input type for following or unfollowing users.

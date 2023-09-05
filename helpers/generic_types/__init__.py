@@ -1,7 +1,6 @@
 import graphene
 from graphene.types import generic
 
-# Represents a basic response object.
 class ResponseBase(graphene.ObjectType):
     """
     Represents a basic response object.
@@ -17,7 +16,6 @@ class ResponseBase(graphene.ObjectType):
     message = graphene.String(description="A message associated with the response.")
     metadata = generic.GenericScalar(description="Additional metadata associated with the response.")
 
-# Represents a response object with authentication tokens.
 class ResponseWithToken(graphene.ObjectType):
     """
     Represents a response object with authentication tokens.
@@ -37,7 +35,6 @@ class ResponseWithToken(graphene.ObjectType):
     refresh_token = graphene.String(description="A refresh token.")
     metadata = generic.GenericScalar(description="Additional metadata associated with the response.")
 
-# Represents a union of response types for dynamic outputs in mutations.
 class ResponseUnion(graphene.Union):
     """
     Represents a union of response types for dynamic outputs in mutations.
@@ -55,7 +52,6 @@ class ResponseUnion(graphene.Union):
             ResponseBase,
         )
 
-# Represents an input object for specifying pagination parameters.
 class PageType(graphene.InputObjectType):
     """
     Represents an input object for specifying pagination parameters.

@@ -1,6 +1,5 @@
 import graphene
 
-# Define an input object type for user input.
 class UserInputType(graphene.InputObjectType):
     """
     Input type for user data during registration or login.
