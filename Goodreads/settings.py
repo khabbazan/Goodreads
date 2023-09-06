@@ -77,12 +77,24 @@ WSGI_APPLICATION = 'Goodreads.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "",
+            "USER": "",
+            "PASSWORD": "",
+            "HOST": "localhost",
+            "PORT": "",
+        }
+    }
 
 
 # Password validation
@@ -169,9 +181,9 @@ if DEBUG:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 else:
     ################ SCALEWAY ################
-    AWS_ACCESS_KEY_ID = "SCW4G0WFXKB5MB0SZV40"
-    AWS_SECRET_ACCESS_KEY = "c3399505-5632-4ff3-8e53-f9ee5dda8a33"
-    AWS_STORAGE_BUCKET_NAME = "unityrip"
+    AWS_ACCESS_KEY_ID = ""
+    AWS_SECRET_ACCESS_KEY = ""
+    AWS_STORAGE_BUCKET_NAME = ""
     AWS_S3_REGION_NAME = "nl-ams"
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.nl-ams.scw.cloud"
     AWS_S3_ENDPOINT_URL = "https://s3.nl-ams.scw.cloud"
@@ -230,4 +242,3 @@ GRAPHQL_JWT = {
     "JWT_ALLOW_REFRESH": True,
     "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=7),
 }
-
