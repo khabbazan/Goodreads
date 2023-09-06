@@ -1,4 +1,4 @@
-``# Goodreads GraphQL API Project
+# Goodreads GraphQL API Project
 
 This Django project utilizes Django 4.2 and GraphQL v3 to provide GraphQL APIs for a simplified version of Goodreads. Goodreads is a website where users can share books and organize them on their shelves with labels such as want-to-read, read, and currently-read.
 
