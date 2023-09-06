@@ -7,6 +7,8 @@ blinker==1.6.2
 boto3==1.28.40
 botocore==1.31.40
 Brotli==1.0.9
+bump2version==1.0.1
+bumpversion==0.6.0
 certifi==2023.7.22
 cfgv==3.4.0
 charset-normalizer==3.2.0
