@@ -126,6 +126,15 @@ RATELIMIT_CONFIGS = {
 RATELIMIT_VIEW = 'helpers.ratelimit.rate_limit_exception_view'
 
 
+# Django Email Settings
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST = ""
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 

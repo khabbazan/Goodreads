@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from graphql_jwt.decorators import login_required
 from graphql_jwt.shortcuts import create_refresh_token
 from graphql_jwt.shortcuts import get_token
+from graphql_jwt.signals import token_issued
 
 from helpers import http_code
 from helpers.generic_types import ResponseUnion
@@ -46,6 +47,7 @@ class CreateLogin(graphene.Mutation):
                 )
 
         if user:
+            token_issued.send(sender=self, request=info.context, user=user)
             return ResponseWithToken(
                 status=http_code.HTTP_200_OK,
                 status_code=http_code.HTTP_200_OK_CODE,
