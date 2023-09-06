@@ -103,4 +103,3 @@ You can run the load test scenario using Locust by following the instructions in
 ## License
 
 This project is open for contributions, and contributions are welcome from the community. It is licensed under the terms of MIT. Feel free to fork, contribute, and make this project even better!
-``

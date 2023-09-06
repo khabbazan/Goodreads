@@ -43,4 +43,3 @@ You can customize this Dockerfile to fit your project's specific requirements. F
 ## License
 
 This project is open for contributions, and contributions are welcome from the community. It is licensed under the terms of MIT. Feel free to fork, contribute, and make this project even better!
-``
