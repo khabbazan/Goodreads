@@ -19,8 +19,8 @@ ALLOWED_HOSTS = ["*"]
 
 
 # Project Version
-VERSION = "1.0.0"
-BUILD_NUMBER = "1e0c5e56"
+VERSION = "1.0.1"
+BUILD_NUMBER = "c4dbc954"
 
 
 # Application definition
