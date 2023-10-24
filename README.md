@@ -38,7 +38,7 @@ This project offers the following GraphQL APIs:
 ## Setup and Installation
 
 1. Clone this repository.
-2. Create a .env file for storing the environment variables.
+2. Create a `.env` file for storing the environment variables.
 3. Install the required dependencies using `pip install -r requirements.txt`.
 4. Configure your Django settings and database connection.
 5. Migrate the database using `python manage.py migrate`.
@@ -46,11 +46,11 @@ This project offers the following GraphQL APIs:
 
 ### Configuration (When Debug Mode is Turned Off)
 
-When running this project under practical mode, you should provide the following configurations in the .env file:
+When running this project under practical mode, you should provide the following configurations in the settings file. for doing that, fill the related env variables in to the `.env` file.
+
 
 #### 1. PostgreSQL Configuration
-   Configure your PostgreSQL database connection in the project's .env file.
-
+   Configure your PostgreSQL database connection in the project's setting file.
 ```python
 DATABASES = {
   "default": {
