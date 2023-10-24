@@ -38,10 +38,17 @@ This project offers the following GraphQL APIs:
 ## Setup and Installation
 
 1. Clone this repository.
-2. Install the required dependencies using `pip install -r requirements.txt`.
-3. Configure your Django settings and database connection.
-4. Migrate the database using `python manage.py migrate`.
-5. Run the development server with `python manage.py runserver`.
+2. Add the following environment variables to the .env file:
+    ```env
+    DJANGO_SECRET_KEY=
+    AWS_ACCESS_KEY_ID=
+    AWS_SECRET_ACCESS_KEY=
+    AWS_STORAGE_BUCKET_NAME=
+    ```
+3. Install the required dependencies using `pip install -r requirements.txt`.
+4. Configure your Django settings and database connection.
+5. Migrate the database using `python manage.py migrate`.
+6. Run the development server with `python manage.py runserver`.
 
 ### Configuration (When Debug Mode is Turned Off)
 
