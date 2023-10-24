@@ -38,13 +38,7 @@ This project offers the following GraphQL APIs:
 ## Setup and Installation
 
 1. Clone this repository.
-2. Add the following environment variables to the .env file:
-    ```env
-    DJANGO_SECRET_KEY=
-    AWS_ACCESS_KEY_ID=
-    AWS_SECRET_ACCESS_KEY=
-    AWS_STORAGE_BUCKET_NAME=
-    ```
+2. Create a .env file for storing the environment variables.
 3. Install the required dependencies using `pip install -r requirements.txt`.
 4. Configure your Django settings and database connection.
 5. Migrate the database using `python manage.py migrate`.
@@ -52,43 +46,42 @@ This project offers the following GraphQL APIs:
 
 ### Configuration (When Debug Mode is Turned Off)
 
-When running this project under practical mode, you should provide the following configurations in the settings file:
+When running this project under practical mode, you should provide the following configurations in the .env file:
 
 #### 1. PostgreSQL Configuration
-   Configure your PostgreSQL database connection in the project's settings file.
+   Configure your PostgreSQL database connection in the project's .env file.
 
 ```python
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'your_database_name',
-       'USER': 'your_database_user',
-       'PASSWORD': 'your_database_password',
-       'HOST': 'your_database_host',
-       'PORT': 'your_database_port',
-   }
+  "default": {
+      "ENGINE": "django.db.backends.postgresql",
+      "NAME": os.getenv("DATABASE_NAME"),
+      "USER": os.getenv("DATABASE_USERNAME"),
+      "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+      "HOST": os.getenv("DATABASE_HOST"),
+      "PORT": os.getenv("DATABASE_PORT"),
+  }
 }
 ```
 #### 2. Email Configuration for Welcome Notification
 Configure your email settings for sending welcome notifications when users authenticate.
 
 ```python
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'your_email_host'
-EMAIL_PORT = 'your_email_port'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_PORT = os.getenv("EMAIL_PORT")
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'your_email_username'
-EMAIL_HOST_PASSWORD = 'your_email_password'
-EMAIL_FROM = 'your_email_from_address'
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
   ```
 
 #### 3. S3 Settings for Image Model
 Configure S3 settings for the image model, which serves as an object server for handling images and static files.
 
 ```python
-AWS_ACCESS_KEY_ID = 'your_aws_access_key_id'
-AWS_SECRET_ACCESS_KEY = 'your_aws_secret_access_key'
-AWS_STORAGE_BUCKET_NAME = 'your_s3_bucket_name'
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
