@@ -141,6 +141,7 @@ RATELIMIT_CONFIGS = {
     "rate": "10/m",  # 10 requests per minute
 }
 RATELIMIT_VIEW = "helpers.ratelimit.rate_limit_exception_view"
+RATELIMIT_ENABLE = not DEBUG
 
 
 # Django Email Settings

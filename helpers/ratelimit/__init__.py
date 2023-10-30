@@ -2,6 +2,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django_ratelimit.decorators import ratelimit
 
+
 def rate_limit_exception_view(request, *args, **kwargs):
     """
     View to handle rate limiting exceptions.
@@ -17,10 +18,11 @@ def rate_limit_exception_view(request, *args, **kwargs):
     message = "Too many requests, please try again later."
 
     response_data = {
-        'message': message,
-        'status': 'error',
+        "message": message,
+        "status": "error",
     }
     return JsonResponse(response_data, status=429)
+
 
 def rate_limit_custom_decorate(request):
     """
@@ -33,8 +35,6 @@ def rate_limit_custom_decorate(request):
         request (HttpRequest): The HTTP request object.
 
     Returns:
-        HttpResponse: The original request or a rate-limited response based on the application's debug mode.
+        HttpResponse: The rate-limited response.
     """
-    if not settings.DEBUG:
-        return ratelimit(**settings.RATELIMIT_CONFIGS)(request)
-    return request
+    return ratelimit(**settings.RATELIMIT_CONFIGS)(request)

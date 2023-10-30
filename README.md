@@ -29,7 +29,7 @@ This project offers the following GraphQL APIs:
 
 ## Features
 
-- Rate limiting settings.
+- Rate limit configs.
 - Image handling through an S3 object server using Django Storage.
 - Redis cache system for queries, with cache expiration for related mutations.
 - Load testing scenario using Locust in the test directory to evaluate API performance.
