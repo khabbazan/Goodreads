@@ -86,6 +86,7 @@ class Image(models.Model):
         small_img = img.copy()
         small_img.thumbnail(small_size)
         small_img_io = BytesIO()
+        small_img.save(small_img_io, format="PNG")
         small_img_file = InMemoryUploadedFile(small_img_io, None, f"{self.original_image.name.split('.')[:-1]}_small.png", "image/png", small_img_io.tell(), None)
         self.small_image = small_img_file
 
@@ -94,6 +95,7 @@ class Image(models.Model):
         medium_img = img.copy()
         medium_img.thumbnail(medium_size)
         medium_img_io = BytesIO()
+        medium_img.save(medium_img_io, format="PNG")
         medium_img_file = InMemoryUploadedFile(medium_img_io, None, f"{self.original_image.name.split('.')[:-1]}_medium.png", "image/png", medium_img_io.tell(), None)
         self.medium_image = medium_img_file
 
@@ -102,6 +104,7 @@ class Image(models.Model):
         large_img = img.copy()
         large_img.thumbnail(large_size)
         large_img_io = BytesIO()
+        large_img.save(large_img_io, format="PNG")
         large_img_file = InMemoryUploadedFile(large_img_io, None, f"{self.original_image.name.split('.')[:-1]}_large.png", "image/png", large_img_io.tell(), None)
         self.large_image = large_img_file
 
