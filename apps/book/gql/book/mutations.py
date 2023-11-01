@@ -1,18 +1,19 @@
 import graphene
-from django.utils.translation import gettext_lazy as _
-from graphql_jwt.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
+from graphql_jwt.decorators import login_required
 
-from apps.book.gql.book.types import BookInputType
-from apps.book.gql.book.types import BookEditInputType
 from apps.account.models import Author
-from apps.book.models import BookAuthor
+from apps.book.gql.book.types import BookEditInputType
+from apps.book.gql.book.types import BookInputType
 from apps.book.models import Book
+from apps.book.models import BookAuthor
 from apps.book.models import Tag
 from helpers import http_code
-from helpers.generic_types import ResponseBase
 from helpers.cache.decorators import expire_cache_keys
+from helpers.generic_types import ResponseBase
+
 
 class BookAdd(graphene.Mutation):
     class Arguments:
@@ -37,9 +38,7 @@ class BookAdd(graphene.Mutation):
         """
 
         author_data = data.pop("author", {})
-        author = Author.objects.filter(
-            Q(id=author_data.get('pk')) | Q(user__phone_number=author_data.get("phone_number"))
-        ).first()
+        author = Author.objects.filter(Q(id=author_data.get("pk")) | Q(user__phone_number=author_data.get("phone_number"))).first()
 
         tags = [item.name for item in data.pop("tags", [])]
         tags = Tag.objects.filter(name__in=tags)

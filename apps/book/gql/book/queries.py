@@ -1,13 +1,15 @@
 import math
+
 import graphene
 from django.core.paginator import Paginator
 
+from apps.book.gql.book.types import BookFilterType
 from apps.book.gql.book.types import BookListType
 from apps.book.gql.book.types import BookQueryType
-from apps.book.gql.book.types import BookFilterType
 from apps.book.models import Book
-from helpers.generic_types import PageType
 from helpers.cache.decorators import query_cache
+from helpers.generic_types import PageType
+
 
 class BookList(graphene.ObjectType):
 
@@ -37,7 +39,7 @@ class BookList(graphene.ObjectType):
 
         res = Book.objects.search(search)
         if filter:
-            filter_is_active = filter.get('is_active')
+            filter_is_active = filter.get("is_active")
             if filter_is_active is not None:
                 res = res.filter(is_active=filter_is_active)
 

@@ -3,6 +3,7 @@ from graphql_jwt.decorators import login_required
 
 from apps.book.gql.shelf.types import UserShelfListQueryType
 
+
 class UserShelfList(graphene.ObjectType):
 
     user_shelf_list = graphene.List(

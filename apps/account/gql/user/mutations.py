@@ -3,12 +3,13 @@ from django.utils.translation import gettext_lazy as _
 from graphql_jwt.decorators import login_required
 
 from apps.account.gql.user.types import UserEditInputType
-from apps.account.models import User
 from apps.account.models import Author
+from apps.account.models import User
 from apps.extension.models import Image
 from helpers import http_code
-from helpers.generic_types import ResponseBase
 from helpers.cache.decorators import expire_cache_keys
+from helpers.generic_types import ResponseBase
+
 
 class UserEdit(graphene.Mutation):
     class Arguments:

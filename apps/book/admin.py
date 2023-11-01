@@ -1,5 +1,11 @@
 from django.contrib import admin
-from apps.book.models import Book, BookAuthor, Shelf, BookShelf, Tag
+
+from apps.book.models import Book
+from apps.book.models import BookAuthor
+from apps.book.models import BookShelf
+from apps.book.models import Shelf
+from apps.book.models import Tag
+
 
 ###################### BookAuthor Admin ####################
 @admin.register(BookAuthor)
@@ -12,9 +18,11 @@ class BookAuthorAdmin(admin.ModelAdmin):
         - search_fields: Fields available for searching.
         - list_display_links: Fields with links in the list view.
     """
-    list_display = ['book', 'author']
-    search_fields = ['book', 'author']
-    list_display_links = ['book', 'author']
+
+    list_display = ["book", "author"]
+    search_fields = ["book", "author"]
+    list_display_links = ["book", "author"]
+
 
 class BookInline(admin.TabularInline):
     """
@@ -25,9 +33,11 @@ class BookInline(admin.TabularInline):
         - fk_name: The foreign key to associate with.
         - extra: Number of empty forms to display for adding related objects.
     """
+
     model = BookAuthor
     fk_name = "book"
     extra = 1
+
 
 class AuthorInline(admin.TabularInline):
     """
@@ -38,11 +48,14 @@ class AuthorInline(admin.TabularInline):
         - fk_name: The foreign key to associate with.
         - extra: Number of empty forms to display for adding related objects.
     """
+
     model = BookAuthor
     fk_name = "author"
     extra = 1
 
+
 ###################### Book Admin ####################
+
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
@@ -57,14 +70,17 @@ class BookAdmin(admin.ModelAdmin):
         - list_editable: Editable fields in the list view.
         - inlines: Inline models for the 'Book' admin.
     """
-    list_display = ['ISBN', 'title', 'create_time', 'is_active']
-    list_filter = ['is_active']
-    search_fields = ['ISBN', 'title']
-    list_display_links = ['ISBN', 'title']
-    list_editable = ['is_active']
+
+    list_display = ["ISBN", "title", "create_time", "is_active"]
+    list_filter = ["is_active"]
+    search_fields = ["ISBN", "title"]
+    list_display_links = ["ISBN", "title"]
+    list_editable = ["is_active"]
     inlines = [BookInline]
 
+
 ################## Book Shelf Admin ##################
+
 
 @admin.register(BookShelf)
 class BookShelfAdmin(admin.ModelAdmin):
@@ -76,9 +92,11 @@ class BookShelfAdmin(admin.ModelAdmin):
         - search_fields: Fields available for searching.
         - list_display_links: Fields with links in the list view.
     """
-    list_display = ['user', 'book', 'shelf']
-    search_fields = ['user', 'book']
-    list_display_links = ['user', 'book']
+
+    list_display = ["user", "book", "shelf"]
+    search_fields = ["user", "book"]
+    list_display_links = ["user", "book"]
+
 
 class ShelfInline(admin.TabularInline):
     """
@@ -89,9 +107,11 @@ class ShelfInline(admin.TabularInline):
         - fk_name: The foreign key to associate with.
         - extra: Number of empty forms to display for adding related objects.
     """
+
     model = BookShelf
     fk_name = "shelf"
     extra = 1
+
 
 class UserBookShelfInline(admin.TabularInline):
     """
@@ -102,11 +122,14 @@ class UserBookShelfInline(admin.TabularInline):
         - fk_name: The foreign key to associate with.
         - extra: Number of empty forms to display for adding related objects.
     """
+
     model = BookShelf
     fk_name = "user"
     extra = 1
 
+
 ##################### Shelf Admin ####################
+
 
 @admin.register(Shelf)
 class ShelfAdmin(admin.ModelAdmin):
@@ -120,18 +143,23 @@ class ShelfAdmin(admin.ModelAdmin):
         - list_display_links: Fields with links in the list view.
         - inlines: Inline models for the 'Shelf' admin.
     """
-    list_display = ['name', 'user']
-    list_filter = ['user']
-    search_fields = ['name', 'user']
-    list_display_links = ['name']
+
+    list_display = ["name", "user"]
+    list_filter = ["user"]
+    search_fields = ["name", "user"]
+    list_display_links = ["name"]
     inlines = [ShelfInline]
 
+
 ########################## Tag #######################
+
 
 class TagAdmin(admin.ModelAdmin):
     """
     Admin class for the 'Tag' model.
     """
+
     pass
+
 
 admin.site.register(Tag, TagAdmin)

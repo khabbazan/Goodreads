@@ -1,4 +1,6 @@
-from django.db.models import Q, QuerySet
+from django.db.models import Q
+from django.db.models import QuerySet
+
 
 class BookQuerySet(QuerySet):
     """
@@ -22,6 +24,7 @@ class BookQuerySet(QuerySet):
             QuerySet: A queryset containing books that match the search criteria.
         """
         return self.filter(Q(title__icontains=query)).distinct() if query else self
+
 
 class TagQuerySet(QuerySet):
     """

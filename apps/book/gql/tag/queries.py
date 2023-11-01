@@ -1,6 +1,8 @@
 import graphene
+
 from apps.book.gql.tag.types import TagListType
 from apps.book.models import Tag
+
 
 class TagList(graphene.ObjectType):
     tag_list = graphene.List(

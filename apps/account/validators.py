@@ -1,6 +1,8 @@
 import re
+
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+
 
 def user_validation(phone_number=None, password=None, email=None, *args, **kwargs):
     """
@@ -26,6 +28,7 @@ def user_validation(phone_number=None, password=None, email=None, *args, **kwarg
         func["name"](*func["args"])
     return True
 
+
 def validate_phone_number(phone_number: str):
     """
     Validate a phone number.
@@ -46,6 +49,7 @@ def validate_phone_number(phone_number: str):
             raise ValidationError(_("Invalid phone number"))
         return True
 
+
 def validate_password(password: str):
     """
     Validate a password.
@@ -60,23 +64,24 @@ def validate_password(password: str):
         ValidationError: If validation fails.
     """
     if password is not None:
-        len_ptr = re.compile(r'(\w{8,})')  # Check if password has at least 8 characters
+        len_ptr = re.compile(r"(\w{8,})")  # Check if password has at least 8 characters
         if not re.match(len_ptr, password):
-            raise ValidationError(_('Password must contain at least 8 characters'))
+            raise ValidationError(_("Password must contain at least 8 characters"))
 
-        lower_ptr = re.compile(r'[a-z]+')  # Check if at least one lowercase letter
+        lower_ptr = re.compile(r"[a-z]+")  # Check if at least one lowercase letter
         if not re.findall(lower_ptr, password):
-            raise ValidationError(_('Password must contain at least one lowercase character'))
+            raise ValidationError(_("Password must contain at least one lowercase character"))
 
-        upper_ptr = re.compile(r'[A-Z]+')  # Check if at least one upper case letter
+        upper_ptr = re.compile(r"[A-Z]+")  # Check if at least one upper case letter
         if not re.findall(upper_ptr, password):
-            raise ValidationError(_('Password must contain at least one uppercase character'))
+            raise ValidationError(_("Password must contain at least one uppercase character"))
 
-        digit_ptr = re.compile(r'[0-9]+')  # Check if at least one digit.
+        digit_ptr = re.compile(r"[0-9]+")  # Check if at least one digit.
         if not re.findall(digit_ptr, password):
-            raise ValidationError(_('Password must contain at least one digit character'))
+            raise ValidationError(_("Password must contain at least one digit character"))
 
         return True
+
 
 def validate_email(email: str):
     """
@@ -92,11 +97,12 @@ def validate_email(email: str):
         ValidationError: If validation fails.
     """
     if email is not None:
-        pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
         match = re.match(pattern, email)
         if not match:
             raise ValidationError(_("Invalid email address"))
         return True
+
 
 def author_validation(first_name=None, last_name=None, *args, **kwargs):
     """
@@ -120,6 +126,7 @@ def author_validation(first_name=None, last_name=None, *args, **kwargs):
         func["name"](*func["args"])
     return True
 
+
 def validate_name(name: str):
     """
     Validate a name.
@@ -134,7 +141,7 @@ def validate_name(name: str):
         ValidationError: If validation fails.
     """
     if name is not None:
-        pattern = r'^[^0-9!@#$%^&*()_+{}\[\]:;"\'<>,.?/~`\\|]*$'
+        pattern = r'^[^0-9!@#$%^&*()_+{}\[\]:;"\'<>,.?/~`\\|]*$'  # noqa P103
         match = re.match(pattern, name)
         if not match:
             raise ValidationError(_(f"{name} should not start with numbers or contain symbolic characters."))

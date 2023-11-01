@@ -1,4 +1,6 @@
-from django.db.models import Q, QuerySet
+from django.db.models import Q
+from django.db.models import QuerySet
+
 
 class UserQuerySet(QuerySet):
     """
@@ -22,6 +24,7 @@ class UserQuerySet(QuerySet):
             QuerySet: Filtered query set of users.
         """
         return self.filter(Q(phone_number__icontains=query)).distinct() if query else self
+
 
 class AuthorQuerySet(QuerySet):
     """

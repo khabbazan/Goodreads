@@ -3,15 +3,18 @@ from graphene_django import DjangoObjectType
 
 from apps.book.models import Tag
 
+
 class TagListType(DjangoObjectType):
     """
     Query type for retrieving tag data.
     """
+
     class Meta:
         model = Tag
         fields = ("id",)
 
     name = graphene.String(description="Name of the tag.")
+
     def resolve_name(root, info):
         """
         Resolve the name of the tag.
@@ -19,6 +22,7 @@ class TagListType(DjangoObjectType):
         return root.name
 
     display_name = graphene.String(description="Display name of the tag.")
+
     def resolve_display_name(root, info):
         """
         Resolve the display name of the tag.

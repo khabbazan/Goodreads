@@ -1,14 +1,16 @@
 import math
+
 import graphene
 from django.core.paginator import Paginator
 from graphql_jwt.decorators import login_required
 
-from apps.account.gql.user.types import UserListType
 from apps.account.gql.user.types import UserFilterType
+from apps.account.gql.user.types import UserListType
 from apps.account.gql.user.types import UserQueryType
 from apps.account.models import User
-from helpers.generic_types import PageType
 from helpers.cache.decorators import query_cache
+from helpers.generic_types import PageType
+
 
 class UserList(graphene.ObjectType):
 
@@ -39,7 +41,7 @@ class UserList(graphene.ObjectType):
 
         res = User.objects.search(search)
         if filter:
-            filter_is_author = filter.get('is_author')
+            filter_is_author = filter.get("is_author")
             if filter_is_author is not None:
                 res = res.filter(is_author=filter_is_author)
 

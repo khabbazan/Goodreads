@@ -1,5 +1,6 @@
-from django.core.management.base import BaseCommand
 from django.core.cache import cache
+from django.core.management.base import BaseCommand
+
 
 class Command(BaseCommand):
     """
@@ -33,7 +34,7 @@ class Command(BaseCommand):
                 If there is an error while clearing the caches, it will display an error message.
     """
 
-    help = 'Clear all caches'
+    help = "Clear all caches"
 
     def handle(self, *args, **options):
         """
@@ -48,7 +49,6 @@ class Command(BaseCommand):
         """
         try:
             cache.clear()
-            self.stdout.write(self.style.SUCCESS('Successfully cleared all caches.'))
-        except Exception as e:
-            self.stderr.write(self.style.ERROR(f'Failed to clear caches: {str(e)}'))
-
+            self.stdout.write(self.style.SUCCESS("Successfully cleared all caches."))
+        except Exception as e:  # noqa B902
+            self.stderr.write(self.style.ERROR(f"Failed to clear caches: {str(e)}"))

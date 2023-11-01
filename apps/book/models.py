@@ -1,8 +1,12 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from apps.book.managers import CustomBookManager, CustomTagManager
-from apps.book.query_sets import BookQuerySet, TagQuerySet
+
+from apps.book.managers import CustomBookManager
+from apps.book.managers import CustomTagManager
+from apps.book.query_sets import BookQuerySet
+from apps.book.query_sets import TagQuerySet
 from apps.book.validators import book_validation
+
 
 class Tag(models.Model):
     """
@@ -15,6 +19,7 @@ class Tag(models.Model):
     Methods:
         - __str__(): Returns the name of the tag as a string.
     """
+
     TAG = (
         ("NEW", _("NEW")),
         ("TREND", _("TREND")),
@@ -33,6 +38,7 @@ class Tag(models.Model):
             str: A string representing the tag.
         """
         return self.name
+
 
 class Book(models.Model):
     """
@@ -53,10 +59,11 @@ class Book(models.Model):
         - clean_fields(): Cleans and validates model fields.
         - save(): Saves the book instance after validation.
     """
+
     ISBN = models.CharField(_("ISBN"), max_length=100, unique=True)
     title = models.CharField(_("book title"), max_length=255)
     description = models.TextField(blank=True)
-    is_active = models.BooleanField(_('is_active'), default=True)
+    is_active = models.BooleanField(_("is_active"), default=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
     create_time = models.DateTimeField(auto_now_add=True)
@@ -65,7 +72,7 @@ class Book(models.Model):
     objects = CustomBookManager.from_queryset(BookQuerySet)()
 
     class Meta:
-        ordering = ['title']
+        ordering = ["title"]
 
     def __str__(self):
         """
@@ -116,6 +123,7 @@ class Book(models.Model):
         self.clean()
         return super().save(*args, **kwargs)
 
+
 class BookAuthor(models.Model):
     """
     Model class to represent the relationship between books and authors.
@@ -127,11 +135,13 @@ class BookAuthor(models.Model):
     Methods:
         - __str__(): Returns a string representation of the relationship.
     """
-    book = models.ForeignKey(Book, related_name='authors', on_delete=models.CASCADE)
-    author = models.ForeignKey(to='account.Author', related_name='books', on_delete=models.CASCADE)
+
+    book = models.ForeignKey(Book, related_name="authors", on_delete=models.CASCADE)
+    author = models.ForeignKey(to="account.Author", related_name="books", on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.book}: {self.author}"
+
 
 class Shelf(models.Model):
     """
@@ -145,14 +155,15 @@ class Shelf(models.Model):
     Methods:
         - __str__(): Returns a string representation of the shelf.
     """
+
     ShelfName = (
-        ('R', _('Read')),
-        ('CR', _('Currently Reading')),
-        ('WR', _('Want to Read')),
+        ("R", _("Read")),
+        ("CR", _("Currently Reading")),
+        ("WR", _("Want to Read")),
     )
 
     name = models.CharField(_("shelf name"), max_length=2, choices=ShelfName, default="WR")
-    user = models.ForeignKey(to='account.User', related_name='shelves', on_delete=models.CASCADE)
+    user = models.ForeignKey(to="account.User", related_name="shelves", on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural = "Shelves"
@@ -165,6 +176,7 @@ class Shelf(models.Model):
             str: A string representing the shelf.
         """
         return f"{self.user}[{self.get_name_display()}]"
+
 
 class BookShelf(models.Model):
     """
@@ -180,9 +192,10 @@ class BookShelf(models.Model):
     Methods:
         - __str__(): Returns a string representation of the relationship.
     """
-    user = models.ForeignKey(to='account.User', related_name='bookshelf_users', on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, related_name='bookshelf_books', on_delete=models.CASCADE)
-    shelf = models.ForeignKey(Shelf, related_name='bookshelf_shelves', on_delete=models.CASCADE)
+
+    user = models.ForeignKey(to="account.User", related_name="bookshelf_users", on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, related_name="bookshelf_books", on_delete=models.CASCADE)
+    shelf = models.ForeignKey(Shelf, related_name="bookshelf_shelves", on_delete=models.CASCADE)
 
     create_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)

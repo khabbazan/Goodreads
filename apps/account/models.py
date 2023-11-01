@@ -1,23 +1,23 @@
-
+from django.contrib.auth.hashers import identify_hasher
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.db import transaction
 from django.utils import timezone
-from django.contrib.auth.hashers import identify_hasher
-from django.contrib.auth.models import PermissionsMixin
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.contenttypes.fields import GenericRelation
 from django.utils.translation import gettext_lazy as _
 
-from apps.account.managers import CustomUserManager
 from apps.account.managers import CustomAuthorManager
-from apps.account.query_sets import UserQuerySet
+from apps.account.managers import CustomUserManager
 from apps.account.query_sets import AuthorQuerySet
-from apps.account.validators import user_validation
+from apps.account.query_sets import UserQuerySet
 from apps.account.validators import author_validation
+from apps.account.validators import user_validation
 from apps.book.models import Shelf
 from apps.extension.models import Image
 
 ######################### User ###################
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """
@@ -154,7 +154,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         return True
 
+
 ######################### Author ###################
+
 
 class Author(models.Model):
     """
@@ -237,7 +239,9 @@ class Author(models.Model):
     def __str__(self):
         return f"[AUTHOR]-{self.user.phone_number}"
 
+
 ######################### Relation ###################
+
 
 class Relation(models.Model):
     """
@@ -253,8 +257,8 @@ class Relation(models.Model):
 
     """
 
-    follower = models.ForeignKey(User, related_name='following', on_delete=models.CASCADE)
-    following = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)
+    follower = models.ForeignKey(User, related_name="following", on_delete=models.CASCADE)
+    following = models.ForeignKey(User, related_name="followers", on_delete=models.CASCADE)
     followed_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

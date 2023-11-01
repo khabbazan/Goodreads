@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline
+
 from apps.extension.models import Image
+
 
 class ImageInline(GenericTabularInline):
     """
@@ -10,8 +12,10 @@ class ImageInline(GenericTabularInline):
         model (Image): The model associated with this inline.
         extra (int): The number of empty forms to display for adding new images.
     """
+
     model = Image
     extra = 1
+
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
@@ -21,6 +25,7 @@ class ImageAdmin(admin.ModelAdmin):
     Fields:
         fieldsets (list of tuple): A list of fieldset definitions for organizing form fields.
     """
+
     fieldsets = [
         (
             "Basic options",

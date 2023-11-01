@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.db.models import Manager
 
+
 class CustomUserManager(BaseUserManager):
     """
     Custom manager for the User model.
@@ -18,6 +19,7 @@ class CustomUserManager(BaseUserManager):
             De-activate objects instead of physically deleting them.
 
     """
+
     def create_user(self, phone_number, password, **kwargs):
         """
         Create and save a user with the given phone_number and password.
@@ -62,13 +64,16 @@ class CustomUserManager(BaseUserManager):
         """
         self.update(is_active=False)
 
+
 class CustomAuthorManager(Manager):
     """
     Custom manager for the Author model (placeholder).
 
     This manager can be extended with custom methods for the Author model if needed.
     """
+
     pass
+
 
 class CustomRelationManager(Manager):
     """
@@ -76,4 +81,5 @@ class CustomRelationManager(Manager):
 
     This manager can be extended with custom methods for the Relation model if needed.
     """
+
     pass

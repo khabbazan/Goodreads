@@ -1,5 +1,7 @@
 from functools import wraps
+
 from django.core.cache import cache
+
 
 def query_cache(cache_key, timeout=3600):
     """
@@ -32,7 +34,6 @@ def query_cache(cache_key, timeout=3600):
             Returns:
                 The result of the query function.
             """
-            query = info.operation.selection_set or info.operation.operation
             result = cache.get(cache_key)
 
             if result is None:
@@ -44,6 +45,7 @@ def query_cache(cache_key, timeout=3600):
         return wrapper
 
     return decorator
+
 
 def expire_cache_keys(cache_keys):
     """
@@ -83,4 +85,3 @@ def expire_cache_keys(cache_keys):
         return wrapper
 
     return decorator
-

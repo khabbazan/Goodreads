@@ -4,9 +4,9 @@ import graphene
 from django.core.paginator import Paginator
 from graphql_jwt.decorators import login_required
 
-from helpers.generic_types import PageType
 from apps.account.gql.relation.types import UserFollowerListType
 from apps.account.gql.relation.types import UserFollowingListType
+from helpers.generic_types import PageType
 
 
 class UserFollowerList(graphene.ObjectType):

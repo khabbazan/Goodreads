@@ -1,9 +1,10 @@
 import math
+
 import graphene
 from django.core.paginator import Paginator
 
-from apps.account.gql.author.types import AuthorListType
 from apps.account.gql.author.types import AuthorFilterType
+from apps.account.gql.author.types import AuthorListType
 from apps.account.gql.author.types import AuthorQueryType
 from apps.account.models import Author
 from helpers.cache.decorators import query_cache
@@ -38,7 +39,7 @@ class AuthorList(graphene.ObjectType):
 
         res = Author.objects.search(search)
         if filter:
-            filter_is_active = filter.get('is_active')
+            filter_is_active = filter.get("is_active")
             if filter_is_active is not None:
                 res = res.filter(user__is_author=filter_is_active)
 

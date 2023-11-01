@@ -1,19 +1,17 @@
-import os
-import uuid
 import base64
 from io import BytesIO
-from PIL import Image as PilImage
 
-from django.db import models
 from django.conf import settings
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.utils.translation import gettext_lazy as _
+from django.db import models
+from PIL import Image as PilImage
 
 from helpers.temp_generator import generate_random_filename
+
 
 class Image(models.Model):
     """
@@ -41,9 +39,9 @@ class Image(models.Model):
 
     user = models.ForeignKey("account.User", on_delete=models.CASCADE)
     original_image = models.ImageField(upload_to=generate_random_filename)
-    large_image = models.ImageField(null=True, blank=True, upload_to='images/')
-    medium_image = models.ImageField(null=True, blank=True, upload_to='images/')
-    small_image = models.ImageField(null=True, blank=True, upload_to='images/')
+    large_image = models.ImageField(null=True, blank=True, upload_to="images/")
+    medium_image = models.ImageField(null=True, blank=True, upload_to="images/")
+    small_image = models.ImageField(null=True, blank=True, upload_to="images/")
     create_date = models.DateField(auto_now_add=True)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
@@ -125,6 +123,6 @@ class Image(models.Model):
 
         img_format, img_str = base64_string.split(";base64,")
         ext = img_format.split("/")[-1]
-        image_content = ContentFile(base64.b64decode(img_str), name=f'tmp_avatar.{ext}')
+        image_content = ContentFile(base64.b64decode(img_str), name=f"tmp_avatar.{ext}")
 
         return image_content

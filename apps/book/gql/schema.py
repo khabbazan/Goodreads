@@ -1,13 +1,13 @@
 from apps.book.gql.book.mutations import BookAdd
 from apps.book.gql.book.mutations import BookEdit
-from apps.book.gql.shelf.mutations import AddBookToShelf
-from apps.book.gql.shelf.mutations import RemoveBookFromShelf
-from apps.book.gql.shelf.mutations import ChangeBookFromShelf
-
-from apps.book.gql.book.queries import BookList
 from apps.book.gql.book.queries import BookDetail
+from apps.book.gql.book.queries import BookList
+from apps.book.gql.shelf.mutations import AddBookToShelf
+from apps.book.gql.shelf.mutations import ChangeBookFromShelf
+from apps.book.gql.shelf.mutations import RemoveBookFromShelf
 from apps.book.gql.shelf.queries import UserShelfList
 from apps.book.gql.tag.queries import TagList
+
 
 class Query(BookList, BookDetail, UserShelfList, TagList):
     pass

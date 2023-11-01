@@ -25,8 +25,7 @@ def generate_temp_file(with_datetime=True):
     return tf.name
 
 
-def generate_random_filename(instance=None, filename=None, ext=None, suffix="", with_datetime=False,
-                             directory="images"):
+def generate_random_filename(instance=None, filename=None, ext=None, suffix="", with_datetime=False, directory="images"):
     """
     Generate a unique filename for an uploaded file.
 
@@ -49,10 +48,10 @@ def generate_random_filename(instance=None, filename=None, ext=None, suffix="", 
 
     ext = filename.split(".")[-1] if ext is None else ext
 
-    filename = f'{uuid.uuid4()}'
-    filename = f'{suffix}-{filename}' if suffix else filename
+    filename = f"{uuid.uuid4()}"
+    filename = f"{suffix}-{filename}" if suffix else filename
     filename = f'{filename}-{datetime.now().strftime("%Y%m%d_%H%M%S")}' if with_datetime else filename
 
-    filename = f'{filename}.{ext}'
+    filename = f"{filename}.{ext}"
 
     return os.path.join(directory, filename)

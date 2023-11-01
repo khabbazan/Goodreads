@@ -1,8 +1,10 @@
 import re
+
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-def book_validation(ISBN=None, title=None, description=None, *args, **kwargs):
+
+def book_validation(ISBN=None, title=None, description=None, *args, **kwargs):  # noqa N803
     """
     Validate book information.
 
@@ -23,7 +25,8 @@ def book_validation(ISBN=None, title=None, description=None, *args, **kwargs):
         func["name"](*func["args"])
     return True
 
-def validate_ISBN(ISBN: str):
+
+def validate_ISBN(ISBN: str):  # noqa N802 N803
     """
     Validate the International Standard Book Number (ISBN).
 
@@ -37,7 +40,7 @@ def validate_ISBN(ISBN: str):
         bool: True if the ISBN is valid, False otherwise.
     """
     if ISBN is not None:
-        pattern = r'^[0-9]{9}([0-9]|X)$'
+        pattern = r"^[0-9]{9}([0-9]|X)$"
         match = re.match(pattern, ISBN)
         if not match:
             raise ValidationError(_("Invalid ISBN"))

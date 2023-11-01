@@ -1,18 +1,19 @@
 import graphene
-from django.db import transaction
 from django.contrib.auth import authenticate
+from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 from graphql_jwt.decorators import login_required
 from graphql_jwt.shortcuts import create_refresh_token
 from graphql_jwt.shortcuts import get_token
 from graphql_jwt.signals import token_issued
 
-from helpers import http_code
-from helpers.generic_types import ResponseUnion
-from helpers.generic_types import ResponseBase
-from helpers.generic_types import ResponseWithToken
-from apps.account.models import User
 from apps.account.gql.authentication.types import UserInputType
+from apps.account.models import User
+from helpers import http_code
+from helpers.generic_types import ResponseBase
+from helpers.generic_types import ResponseUnion
+from helpers.generic_types import ResponseWithToken
+
 
 class CreateLogin(graphene.Mutation):
     class Arguments:
@@ -62,6 +63,7 @@ class CreateLogin(graphene.Mutation):
                 status_code=http_code.HTTP_401_UNAUTHORIZED_CODE,
                 message=_("Login Failed!"),
             )
+
 
 class Logout(graphene.Mutation):
 

@@ -1,16 +1,17 @@
 import graphene
-from django.utils.translation import gettext_lazy as _
-from graphql_jwt.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
+from graphql_jwt.decorators import login_required
 
-from helpers import http_code
-from helpers.generic_types import ResponseBase
 from apps.book.gql.shelf.types import BookShelfInputType
 from apps.book.gql.shelf.types import ChangeBookShelfInputType
 from apps.book.models import Book
-from apps.book.models import Shelf
 from apps.book.models import BookShelf
+from apps.book.models import Shelf
+from helpers import http_code
+from helpers.generic_types import ResponseBase
+
 
 class AddBookToShelf(graphene.Mutation):
     class Arguments:
@@ -35,9 +36,7 @@ class AddBookToShelf(graphene.Mutation):
 
         user = info.context.user
         book = Book.objects.filter(id=data.get("book_id")).first()
-        shelf = Shelf.objects.filter(
-            Q(name=getattr(data["shelf_name"], "name", data.get("shelf_name"))) & Q(user=user)
-        ).first()
+        shelf = Shelf.objects.filter(Q(name=getattr(data["shelf_name"], "name", data.get("shelf_name"))) & Q(user=user)).first()
 
         if book and shelf:
             obj = BookShelf(user=user, book=book, shelf=shelf)
@@ -55,6 +54,7 @@ class AddBookToShelf(graphene.Mutation):
                 status_code=http_code.HTTP_406_NOT_ACCEPTABLE_CODE,
                 message=_("Operation failed!"),
             )
+
 
 class RemoveBookFromShelf(graphene.Mutation):
     class Arguments:
@@ -79,10 +79,7 @@ class RemoveBookFromShelf(graphene.Mutation):
 
         user = info.context.user
         book = Book.objects.filter(id=data.get("book_id")).first()
-        shelf = Shelf.objects.filter(
-            name=getattr(data["shelf_name"], "name", data.get("shelf_name")),
-            user=user
-        ).first()
+        shelf = Shelf.objects.filter(name=getattr(data["shelf_name"], "name", data.get("shelf_name")), user=user).first()
 
         if book and shelf:
             BookShelf.objects.filter(user=user, book=book, shelf=shelf).delete()
@@ -99,6 +96,7 @@ class RemoveBookFromShelf(graphene.Mutation):
                 status_code=http_code.HTTP_406_NOT_ACCEPTABLE_CODE,
                 message=_("Operation failed!"),
             )
+
 
 class ChangeBookFromShelf(graphene.Mutation):
     class Arguments:
@@ -123,14 +121,8 @@ class ChangeBookFromShelf(graphene.Mutation):
 
         user = info.context.user
         book = Book.objects.filter(id=data.get("book_id")).first()
-        from_shelf = Shelf.objects.filter(
-            name=getattr(data["from_shelf"], "name", data.get("from_shelf")),
-            user=user
-        ).first()
-        to_shelf = Shelf.objects.filter(
-            name=getattr(data["to_shelf"], "name", data.get("to_shelf")),
-            user=user
-        ).first()
+        from_shelf = Shelf.objects.filter(name=getattr(data["from_shelf"], "name", data.get("from_shelf")), user=user).first()
+        to_shelf = Shelf.objects.filter(name=getattr(data["to_shelf"], "name", data.get("to_shelf")), user=user).first()
 
         if book and from_shelf and to_shelf:
             with transaction.atomic():

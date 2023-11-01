@@ -1,16 +1,17 @@
 import graphql_jwt
+
 from apps.account.gql.authentication.mutations import CreateLogin
 from apps.account.gql.authentication.mutations import Logout
-from apps.account.gql.user.mutations import UserEdit
 from apps.account.gql.author.mutations import AuthorEdit
-from apps.account.gql.relation.mutations import UserFollow
-
-from apps.account.gql.user.queries import UserList
-from apps.account.gql.user.queries import UserDetail
-from apps.account.gql.author.queries import AuthorList
 from apps.account.gql.author.queries import AuthorDetail
+from apps.account.gql.author.queries import AuthorList
+from apps.account.gql.relation.mutations import UserFollow
 from apps.account.gql.relation.queries import UserFollowerList
 from apps.account.gql.relation.queries import UserFollowingList
+from apps.account.gql.user.mutations import UserEdit
+from apps.account.gql.user.queries import UserDetail
+from apps.account.gql.user.queries import UserList
+
 
 class Query(UserList, UserDetail, AuthorList, AuthorDetail, UserFollowerList, UserFollowingList):
     pass
